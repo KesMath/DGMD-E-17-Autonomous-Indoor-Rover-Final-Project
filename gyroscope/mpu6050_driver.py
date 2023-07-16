@@ -31,18 +31,10 @@ def main():
     g_driver = GyroscopeDriver()
     while True:
         #print("X: " + str(g_driver.read_roll()))
-        print("Y: " + str(g_driver.read_yaw()))
+        print("Z-Axis YAW: " + str(g_driver.read_yaw()))
         #print("Z: " + str(g_driver.read_pitch()))
         print(" ")
         time.sleep(1)
-    
-    # i2c = board.I2C()  # uses board.SCL and board.SDA
-    # mpu = adafruit_mpu6050.MPU6050(i2c)
-
-    # while True:
-    #     print("Gyro X:{x} Y:{y}, Z:{z} deg/s".format(x = np.rad2deg(mpu.gyro[0]), y = np.rad2deg(mpu.gyro[1]), z = np.rad2deg(mpu.gyro[2])))
-    #     print("")
-    #     time.sleep(1)
 
 if __name__ == '__main__':
     main()
