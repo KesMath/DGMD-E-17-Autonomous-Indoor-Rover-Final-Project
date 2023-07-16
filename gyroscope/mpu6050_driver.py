@@ -1,5 +1,6 @@
 import time
 import board
+import numpy as np
 import adafruit_mpu6050
 
 TURN_DEGREE = 90
@@ -15,15 +16,15 @@ class GyroscopeDriver():
 
     # orientation in X-axis
     def read_roll(self):
-        return self.__poll_sensor(0)
+        return np.rad2deg(self.__poll_sensor(0))
     
     # orientation in Y-Axis
     def read_yaw(self):
-        return self.__poll_sensor(1)
+        return np.rad2deg(self.__poll_sensor(1))
 
     # orientation in Z-Axis
     def read_pitch(self):
-        return self.__poll_sensor(2)
+        return np.rad2deg(self.__poll_sensor(2))
 
 
 def main():
@@ -32,6 +33,7 @@ def main():
         print("X: " + str(g_driver.read_roll()))
         print("Y: " + str(g_driver.read_yaw()))
         print("Z: " + str(g_driver.read_pitch()))
+        print(" ")
         time.sleep(1)
 
 if __name__ == '__main__':
