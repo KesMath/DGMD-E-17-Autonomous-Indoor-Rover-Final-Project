@@ -27,19 +27,12 @@ class GyroscopeDriver():
 
 
 def main():
-    i2c = board.I2C()
-    mpu = adafruit_mpu6050.MPU6050(i2c)
-    
-    print("Acceleration: X:%.2f, Y: %.2f, Z: %.2f m/s^2" % (mpu.acceleration))
-    print("Gyro X:%.2f, Y: %.2f, Z: %.2f rad/s" % (mpu.gyro))
-    print("Temperature: %.2f C" % mpu.temperature)
-    print("")
-    time.sleep(1)
-
     g_driver = GyroscopeDriver()
-    print("X: " + str(g_driver.read_roll()))
-    print("Y: " + str(g_driver.read_yaw()))
-    print("Z: " + str(g_driver.read_pitch()))
+    while True:
+        print("X: " + str(g_driver.read_roll()))
+        print("Y: " + str(g_driver.read_yaw()))
+        print("Z: " + str(g_driver.read_pitch()))
+        time.sleep(1)
 
 if __name__ == '__main__':
     main()
