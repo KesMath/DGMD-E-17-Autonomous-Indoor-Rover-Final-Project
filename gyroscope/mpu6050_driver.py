@@ -40,7 +40,7 @@ def main():
     mpu = adafruit_mpu6050.MPU6050(i2c)
 
     while True:
-        print("Gyro X:%.2f, Y: %.2f, Z: %.2f deg/s" % np.rad2deg(mpu.gyro[0]), np.rad2deg(mpu.gyro[1]), np.rad2deg(mpu.gyro[2]))
+        print("Gyro X:{x} Y:{y}, Z:{z} deg/s".format(x = np.rad2deg(mpu.gyro[0]), y = np.rad2deg(mpu.gyro[1]), z = np.rad2deg(mpu.gyro[2])))
         print("")
         time.sleep(1)
 
