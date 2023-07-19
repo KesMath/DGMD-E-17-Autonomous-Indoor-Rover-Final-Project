@@ -3,7 +3,6 @@ import board
 import numpy as np
 import adafruit_mpu6050
 
-TURN_DEGREE = 90
 STRAIGHT_DEGREE = 0
 
 class GyroscopeDriver():
@@ -29,12 +28,13 @@ class GyroscopeDriver():
 
 def main():
     g_driver = GyroscopeDriver()
+    tolerance = 0.5 # use exernal compass to determine what sensor reading is at 90deg orientation to determine acceptable tolerance factor 
     while True:
-        #print("X: " + str(g_driver.read_roll()))
-        print("Z-Axis YAW: " + str(g_driver.read_yaw()))
-        #print("Z: " + str(g_driver.read_pitch()))
-        print(" ")
-        time.sleep(1)
+        if (STRAIGHT_DEGREE >= g_driver.read_yaw() <= tolerance): 
+            print("Z-Axis Spin In of Tolerance: " + str(g_driver.read_yaw()))
+            print(" ")
+            time.sleep(1)
+        print("Z-Axis Spin Out of Tolerance: " + str(g_driver.read_yaw()))
 
 if __name__ == '__main__':
     main()
