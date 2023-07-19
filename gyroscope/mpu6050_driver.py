@@ -34,7 +34,8 @@ def main():
             print("Z-Axis Spin In of Tolerance: " + str(g_driver.read_yaw()))
             print(" ")
             time.sleep(3)
-        print("Z-Axis Spin Out of Tolerance: " + str(g_driver.read_yaw()))
+        print("Z-Axis: " + str(g_driver.read_yaw()))
+        time.sleep(3)
 
 if __name__ == '__main__':
     main()
