@@ -34,18 +34,10 @@ def main():
         if (STRAIGHT_DEGREE <= yaw and yaw <= tolerance): 
             print("Z-Axis: " + str(yaw))
             print(" ")
-            time.sleep(3)
+            time.sleep(0.1)
         else:    
             print("Z-Axis Spin Out of Tolerance: " + str(yaw))
-            time.sleep(3)
+            time.sleep(0.1)
 
 if __name__ == '__main__':
     main()
-
-# STRAIGHT_DEGREE = 0
-# tolerance = 0.5
-# yaw = -9.534351145038167
-# if (STRAIGHT_DEGREE <= yaw and yaw <= tolerance): 
-#     print("Z-Axis: " + str(yaw))
-# else:    
-#     print("Z-Axis Spin Out of Tolerance: " + str(yaw))
