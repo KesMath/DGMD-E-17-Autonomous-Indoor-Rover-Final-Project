@@ -35,8 +35,9 @@ def main():
             print("Z-Axis: " + str(yaw))
             print(" ")
             time.sleep(3)
-        print("Z-Axis Spin Out of Tolerance: " + str(yaw))
-        time.sleep(3)
+        else:    
+            print("Z-Axis Spin Out of Tolerance: " + str(yaw))
+            time.sleep(3)
 
 if __name__ == '__main__':
     main()
