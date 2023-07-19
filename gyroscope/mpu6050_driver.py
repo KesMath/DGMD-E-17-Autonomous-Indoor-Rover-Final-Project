@@ -30,7 +30,7 @@ def main():
     g_driver = GyroscopeDriver()
     tolerance = 0.5 # use exernal compass to determine what sensor reading is at 90deg orientation to determine acceptable tolerance factor 
     while True:
-        yaw == g_driver.read_yaw()
+        yaw = g_driver.read_yaw()
         if (STRAIGHT_DEGREE >= yaw <= tolerance): 
             print("Z-Axis Spin In of Tolerance: " + str(yaw))
             print(" ")
