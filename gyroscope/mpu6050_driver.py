@@ -33,7 +33,7 @@ def main():
         if (STRAIGHT_DEGREE >= g_driver.read_yaw() <= tolerance): 
             print("Z-Axis Spin In of Tolerance: " + str(g_driver.read_yaw()))
             print(" ")
-            time.sleep(1)
+            time.sleep(3)
         print("Z-Axis Spin Out of Tolerance: " + str(g_driver.read_yaw()))
 
 if __name__ == '__main__':
