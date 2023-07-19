@@ -31,7 +31,7 @@ def main():
     tolerance = 0.5 # use exernal compass to determine what sensor reading is at 90deg orientation to determine acceptable tolerance factor 
     while True:
         yaw = g_driver.read_yaw()
-        if (STRAIGHT_DEGREE >= yaw and yaw <= tolerance): 
+        if (STRAIGHT_DEGREE <= yaw and yaw <= tolerance): 
             print("Z-Axis: " + str(yaw))
             print(" ")
             time.sleep(3)
@@ -41,3 +41,11 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+# STRAIGHT_DEGREE = 0
+# tolerance = 0.5
+# yaw = -9.534351145038167
+# if (STRAIGHT_DEGREE <= yaw and yaw <= tolerance): 
+#     print("Z-Axis: " + str(yaw))
+# else:    
+#     print("Z-Axis Spin Out of Tolerance: " + str(yaw))
