@@ -3,6 +3,15 @@ import board
 import numpy as np
 import adafruit_mpu6050
 
+# PURCHASE MAGNOMETER!!
+
+# Tutorial: https://learn.adafruit.com/lsm303-accelerometer-slash-compass-breakout/python-circuitpython
+# Lib: https://github.com/adafruit/Adafruit_CircuitPython_LSM303DLH_Mag
+
+# Calculate Compass Heading (i.e. Magnometer Vector to Degrees)
+# https://learn.adafruit.com/lsm303-accelerometer-slash-compass-breakout/coding
+
+
 STRAIGHT_DEGREE = 0
 
 class GyroscopeDriver():
