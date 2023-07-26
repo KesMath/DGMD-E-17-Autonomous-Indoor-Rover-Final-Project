@@ -12,7 +12,7 @@ RIGHT_ANGLE_DEGREE = 90
 class MagnetometerDriver():
     def __init__(self):
         self.i2c = board.I2C()  # uses board.SCL and board.SDA
-        self.compass_sensor = adafruit_lsm303dlh_mag.LSM303DLH_Mag(i2c)
+        self.compass_sensor = adafruit_lsm303dlh_mag.LSM303DLH_Mag(self.i2c)
 
     # returns three-axis magnetic field as x,y,z vectors
     def poll_sensor(self) -> tuple:
