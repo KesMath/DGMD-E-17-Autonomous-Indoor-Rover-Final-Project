@@ -1,6 +1,6 @@
 import time
 import board
-from math import atan2, degrees
+from math import atan2, degrees, pi
 from typing import Tuple
 import adafruit_lsm303dlh_mag
 
@@ -21,7 +21,7 @@ class MagnetometerDriver():
     # returns 0-360 deg
     def get_compass_reading(self) -> float:
         x,y,_ = self.compass_sensor.magnetic
-        degrees = (math.atan2(y,x) * HALF_CIRCLE_DEGREE) / math.pi
+        degrees = (.atan2(y,x) * HALF_CIRCLE_DEGREE) / pi
         if degrees < 0:
             degrees += FULL_CIRCLE_DEGREE
         return degrees
