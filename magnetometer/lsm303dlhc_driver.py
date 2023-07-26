@@ -16,11 +16,11 @@ class MagnetometerDriver():
 
     # returns three-axis magnetic field as x,y,z vectors
     def poll_sensor(self) -> tuple:
-        return (self.compass_sensor.magnetic)
+        return self.compass_sensor.magnetic
 
 def main():
     mag = MagnetometerDriver()
     while True:
-        print('Magnetometer (gauss):' + mag.poll_sensor)
+        print('Magnetometer (gauss):' + str(mag.poll_sensor))
         print('')
         time.sleep(1.0)
