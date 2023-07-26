@@ -16,7 +16,7 @@ class MagnetometerDriver():
 
     # returns three-axis magnetic field as x,y,z vectors
     def poll_sensor(self) -> Tuple[float, float, float]:
-        return (self.compass_sensor.magnetic)
+        return self.compass_sensor.magnetic
 
 def main():
     mag = MagnetometerDriver()
