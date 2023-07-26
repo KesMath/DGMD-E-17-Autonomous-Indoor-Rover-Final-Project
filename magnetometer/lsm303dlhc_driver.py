@@ -1,6 +1,6 @@
 import time
 import board
-import math
+from math import atan2, degrees
 from typing import Tuple
 import adafruit_lsm303dlh_mag
 
