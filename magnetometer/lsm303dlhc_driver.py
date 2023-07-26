@@ -21,7 +21,7 @@ class MagnetometerDriver():
     # returns 0-360 deg
     def get_compass_reading(self) -> float:
         x,y,_ = self.compass_sensor.magnetic
-        degrees = (math.atan2(x / y) * HALF_CIRCLE_DEGREE) / math.pi
+        degrees = (math.atan2(y,x) * HALF_CIRCLE_DEGREE) / math.pi
         if degrees < 0:
             degrees += FULL_CIRCLE_DEGREE
         return degrees
