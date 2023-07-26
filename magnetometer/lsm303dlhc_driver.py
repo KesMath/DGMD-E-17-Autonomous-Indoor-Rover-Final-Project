@@ -1,13 +1,26 @@
 import time
 import board
+from typing import Tuple
 import adafruit_lsm303dlh_mag
 
-i2c = board.I2C()  # uses board.SCL and board.SDA
-sensor = adafruit_lsm303dlh_mag.LSM303DLH_Mag(i2c)
+# DataSheet: https://cdn-shop.adafruit.com/datasheets/LSM303DLHC.PDF
 
-while True:
-    mag_x, mag_y, mag_z = sensor.magnetic
+STRAIGHT_DEGREE = 0
+RIGHT_ANGLE_DEGREE = 90
 
-    print('Magnetometer (gauss): ({0:10.3f}, {1:10.3f}, {2:10.3f})'.format(mag_x, mag_y, mag_z))
-    print('')
-    time.sleep(1.0)
+# A tilt-compensated electronic compass (eCompass)
+class MagnetometerDriver():
+    def __init__(self):
+        self.i2c = board.I2C()  # uses board.SCL and board.SDA
+        self.compass_sensor = adafruit_lsm303dlh_mag.LSM303DLH_Mag(i2c)
+
+    # returns three-axis magnetic field as x,y,z vectors
+    def poll_sensor(self) -> tuple:
+        return (self.compass_sensor.magnetic)
+
+def main():
+    mag = MagnetometerDriver()
+    while True:
+        print('Magnetometer (gauss):' + mag.poll_sensor)
+        print('')
+        time.sleep(1.0)
