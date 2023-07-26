@@ -24,3 +24,6 @@ def main():
         print('Magnetometer (gauss):' + str(mag.poll_sensor))
         print('')
         time.sleep(1.0)
+
+if __name__ == '__main__':
+    main()
