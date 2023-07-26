@@ -21,7 +21,8 @@ class MagnetometerDriver():
 def main():
     mag = MagnetometerDriver()
     while True:
-        print('Magnetometer (gauss):' + str(mag.poll_sensor))
+        mag_x, mag_y, mag_z = mag.poll_sensor
+        print('Magnetometer (gauss): ' + str(mag_x) + " " + str(mag_y) + " " + str(mag_z))
         print('')
         time.sleep(1.0)
 
