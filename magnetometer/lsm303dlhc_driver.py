@@ -15,8 +15,8 @@ class MagnetometerDriver():
         self.compass_sensor = adafruit_lsm303dlh_mag.LSM303DLH_Mag(self.i2c)
 
     # returns three-axis magnetic field as x,y,z vectors
-    def poll_sensor(self) -> tuple:
-        return self.compass_sensor.magnetic
+    def poll_sensor(self) -> Tuple[float, float, float]:
+        return (self.compass_sensor.magnetic)
 
 def main():
     mag = MagnetometerDriver()
