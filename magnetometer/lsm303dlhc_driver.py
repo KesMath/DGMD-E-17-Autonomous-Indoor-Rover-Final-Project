@@ -6,6 +6,7 @@ import adafruit_lsm303dlh_mag
 
 # DataSheet: https://cdn-shop.adafruit.com/datasheets/LSM303DLHC.PDF
 # Convert MicroTesla to Compass Head: https://learn.adafruit.com/lsm303-accelerometer-slash-compass-breakout/coding
+# Explaination with regards to Electromagnetic Disturbances: https://www.instructables.com/LSM303DLHC-exploration/
 
 STRAIGHT_DEGREE = 0
 RIGHT_ANGLE_DEGREE = 90
