@@ -31,7 +31,7 @@ def main():
     threshold = 89 
     while True:
         yaw = g_driver.read_yaw()
-        if (yaw > tolerance): 
+        if (yaw > threshold): 
             print("Greater than " + str(threshold) + ": "  + str(yaw) + "\n")
             time.sleep(0.1)
         else:  
