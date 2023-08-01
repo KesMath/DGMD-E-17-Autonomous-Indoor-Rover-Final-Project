@@ -1,0 +1,84 @@
+pi@headlesspi:~/DGMD-S-17-Autonomous-Indoor-Rover-Final-Project $ python gyroscope/mpu6050_driver.py
+Right turn in proximity of 89: 89.08396946564885
+
+Right turn in proximity of 89: 90.58778625954199
+
+Right turn in proximity of 89: 91.38931297709924
+
+Right turn in proximity of 89: 91.74045801526718
+
+Right turn in proximity of 89: 91.80916030534351
+
+Right turn in proximity of 89: 91.78625954198473
+
+Right turn in proximity of 89: 91.14503816793894
+
+Right turn in proximity of 89: 90.22900763358778
+
+Right turn in proximity of 89: 89.02290076335878
+
+Right turn in proximity of 89: 90.80916030534351
+
+Right turn in proximity of 89: 92.37404580152672
+
+Right turn in proximity of 89: 94.1526717557252
+
+Right turn in proximity of 89: 95.19083969465649
+
+Right turn in proximity of 89: 95.29007633587786
+
+Right turn in proximity of 89: 95.73282442748092
+
+Right turn in proximity of 89: 97.12977099236642
+
+Right turn in proximity of 89: 99.83206106870229
+
+Right turn in proximity of 89: 102.98473282442748
+
+Right turn in proximity of 89: 106.45038167938931
+
+Right turn in proximity of 89: 108.4885496183206
+
+Right turn in proximity of 89: 109.96946564885496
+
+Right turn in proximity of 89: 110.95419847328245
+
+Right turn in proximity of 89: 111.6030534351145
+
+Right turn in proximity of 89: 111.64885496183206
+
+Right turn in proximity of 89: 110.54198473282443
+
+Right turn in proximity of 89: 109.36641221374046
+
+Right turn in proximity of 89: 106.90076335877863
+
+Right turn in proximity of 89: 103.19083969465649
+
+Right turn in proximity of 89: 100.16793893129771
+
+Right turn in proximity of 89: 96.41984732824427
+
+Right turn in proximity of 89: 92.87022900763358
+
+Right turn in proximity of 89: 89.53435114503817
+
+Left turn in proximity of -89: -89.97709923664122
+
+Left turn in proximity of -89: -92.54198473282443
+
+Left turn in proximity of -89: -94.45038167938931
+
+Left turn in proximity of -89: -95.63358778625954
+
+Left turn in proximity of -89: -95.48091603053435
+
+Left turn in proximity of -89: -95.20610687022901
+
+Left turn in proximity of -89: -95.10687022900764
+
+Left turn in proximity of -89: -93.38931297709924
+
+Left turn in proximity of -89: -91.06106870229007
+
+Left turn in proximity of -89: -89.45801526717557
