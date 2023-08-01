@@ -34,7 +34,7 @@ def main():
         if (yaw > threshold): 
             print("Greater than " + str(threshold) + ": "  + str(yaw) + "\n")
             time.sleep(0.01)
-        else:  
+        #else:  
             #print("Degree: " + str(yaw))
 
 if __name__ == '__main__':
