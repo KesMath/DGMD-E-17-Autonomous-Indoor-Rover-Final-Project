@@ -28,14 +28,17 @@ class GyroscopeDriver():
 
 def main():
     g_driver = GyroscopeDriver()
-    threshold = 89 
+    right_threshold = 89
+    left_threshold = -89 
     while True:
         yaw = g_driver.read_yaw()
-        if (yaw > threshold): 
-            print("Greater than " + str(threshold) + ": "  + str(yaw) + "\n")
+        if (yaw > right_threshold): 
+            print("Right turn in proximity of " + str(right_threshold) + ": "  + str(yaw) + "\n")
             time.sleep(0.01)
-        #else:  
-            #print("Degree: " + str(yaw))
+
+        elif (yaw < left_threshold): 
+            print("Left turn in proximity of " + str(left_threshold) + ": "  + str(yaw) + "\n")
+            time.sleep(0.01)
 
 if __name__ == '__main__':
     main()
