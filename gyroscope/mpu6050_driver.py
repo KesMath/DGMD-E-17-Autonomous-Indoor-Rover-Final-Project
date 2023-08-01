@@ -4,6 +4,8 @@ import numpy as np
 import adafruit_mpu6050
 
 STRAIGHT_DEGREE = 0
+RIGHT_THRESHOLD = 89.99999999999999
+LEFT_THRESHOLD = -89.99999999999999
 
 class GyroscopeDriver():
     def __init__(self):
@@ -28,16 +30,14 @@ class GyroscopeDriver():
 
 def main():
     g_driver = GyroscopeDriver()
-    right_threshold = 89
-    left_threshold = -89 
     while True:
         yaw = g_driver.read_yaw()
-        if (yaw > right_threshold): 
-            print("Right turn in proximity of " + str(right_threshold) + ": "  + str(yaw) + "\n")
+        if (yaw > RIGHT_THRESHOLD): 
+            print("Right turn in proximity of " + str(RIGHT_THRESHOLD) + ": "  + str(yaw) + "\n")
             time.sleep(0.01)
 
-        elif (yaw < left_threshold): 
-            print("Left turn in proximity of " + str(left_threshold) + ": "  + str(yaw) + "\n")
+        elif (yaw < LEFT_THRESHOLD): 
+            print("Left turn in proximity of " + str(LEFT_THRESHOLD) + ": "  + str(yaw) + "\n")
             time.sleep(0.01)
 
 if __name__ == '__main__':
