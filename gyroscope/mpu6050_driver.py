@@ -4,8 +4,8 @@ import numpy as np
 import adafruit_mpu6050
 
 STRAIGHT_DEGREE = 0
-RIGHT_THRESHOLD = 89.99999999999999
-LEFT_THRESHOLD = -89.99999999999999
+RIGHT_THRESHOLD = 89
+LEFT_THRESHOLD = -89
 
 class GyroscopeDriver():
     def __init__(self):
