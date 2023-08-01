@@ -33,9 +33,9 @@ def main():
         yaw = g_driver.read_yaw()
         if (yaw > threshold): 
             print("Greater than " + str(threshold) + ": "  + str(yaw) + "\n")
-            time.sleep(0.1)
+            time.sleep(0.01)
         else:  
-            print("Degree: " + str(yaw))
+            #print("Degree: " + str(yaw))
 
 if __name__ == '__main__':
     main()
