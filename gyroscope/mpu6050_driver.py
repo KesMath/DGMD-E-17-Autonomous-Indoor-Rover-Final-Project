@@ -5,6 +5,7 @@ import adafruit_mpu6050
 
 STRAIGHT_DEGREE = 0
 THRESHOLDING_VALUE = (-89, 89)
+SLEEP_DELAY = 1.00e-02
 
 class GyroscopeDriver():
     def __init__(self):
@@ -32,7 +33,7 @@ class GyroscopeDriver():
             yaw = self.read_yaw()
             if (yaw > THRESHOLDING_VALUE[1]): 
                 print("Right turn in proximity of " + str(THRESHOLDING_VALUE[1]) + ": "  + str(yaw) + "\n")
-                time.sleep(0.01)
+                time.sleep(SLEEP_DELAY)
                 break
 
     def is_sensor_exceeding_left_threshold(self):
@@ -40,7 +41,7 @@ class GyroscopeDriver():
             yaw = self.read_yaw()
             if (yaw < THRESHOLDING_VALUE[0]): 
                 print("Left turn in proximity of " + str(THRESHOLDING_VALUE[0]) + ": "  + str(yaw) + "\n")
-                time.sleep(0.01)
+                time.sleep(SLEEP_DELAY)
                 break
 
 def main():
