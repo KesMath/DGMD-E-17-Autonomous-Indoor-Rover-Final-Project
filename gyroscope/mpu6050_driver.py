@@ -46,19 +46,9 @@ class GyroscopeDriver():
                 time.sleep(SLEEP_DELAY)
                 break
 
-    # determine if orientation is ~0deg
-    def is_sensor_linear(self):
-        while True:
-            yaw = self.read_yaw()
-            if (yaw > STRAIGHT_DEGREE[0] and yaw < STRAIGHT_DEGREE[1]): 
-                print("Linear-Orientation in proximity of " + str(STRAIGHT_DEGREE[0]) + ": "  + str(yaw) + "\n")
-                time.sleep(SLEEP_DELAY)
-                break
-
 def main():
     g_driver = GyroscopeDriver()
     g_driver.is_sensor_orthogonally_left()
-    g_driver.is_sensor_linear()
     g_driver.is_sensor_orthogonally_right()
 
 if __name__ == '__main__':
