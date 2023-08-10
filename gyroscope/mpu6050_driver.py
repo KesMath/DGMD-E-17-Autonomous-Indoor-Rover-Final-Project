@@ -3,7 +3,7 @@ import board
 import numpy as np
 import adafruit_mpu6050
 
-STRAIGHT_DEGREE = 0
+STRAIGHT_DEGREE = (0, 1.00e-02) 
 THRESHOLDING_VALUE = (-89, 89)
 SLEEP_DELAY = 1.00e-02
 
@@ -28,26 +28,38 @@ class GyroscopeDriver():
         return np.rad2deg(self.__poll_sensor(2))
 
 
-    def is_sensor_exceeding_right_threshold(self):
-        while True:
-            yaw = self.read_yaw()
-            if (yaw > THRESHOLDING_VALUE[1]): 
-                print("Right turn in proximity of " + str(THRESHOLDING_VALUE[1]) + ": "  + str(yaw) + "\n")
-                time.sleep(SLEEP_DELAY)
-                break
-
-    def is_sensor_exceeding_left_threshold(self):
+    # determine if orientation is -90deg
+    def is_sensor_orthogonally_left(self):
         while True:
             yaw = self.read_yaw()
             if (yaw < THRESHOLDING_VALUE[0]): 
-                print("Left turn in proximity of " + str(THRESHOLDING_VALUE[0]) + ": "  + str(yaw) + "\n")
+                print("Orthogonally-Left turn in proximity of " + str(THRESHOLDING_VALUE[0]) + ": "  + str(yaw) + "\n")
+                time.sleep(SLEEP_DELAY)
+                break
+
+    # determine if orientation is +90deg
+    def is_sensor_orthogonally_right(self):
+        while True:
+            yaw = self.read_yaw()
+            if (yaw > THRESHOLDING_VALUE[1]): 
+                print("Orthogonally-Right in proximity of " + str(THRESHOLDING_VALUE[1]) + ": "  + str(yaw) + "\n")
+                time.sleep(SLEEP_DELAY)
+                break
+
+    # determine if orientation is ~0deg
+    def is_sensor_linear(self):
+        while True:
+            yaw = self.read_yaw()
+            if (yaw > STRAIGHT_DEGREE[0] and yaw < STRAIGHT_DEGREE[1]): 
+                print("Linear-Orientation in proximity of " + str(STRAIGHT_DEGREE[0]) + ": "  + str(yaw) + "\n")
                 time.sleep(SLEEP_DELAY)
                 break
 
 def main():
     g_driver = GyroscopeDriver()
-    g_driver.is_sensor_exceeding_left_threshold()
-    g_driver.is_sensor_exceeding_right_threshold()
+    g_driver.is_sensor_orthogonally_left()
+    g_driver.is_sensor_linear()
+    g_driver.is_sensor_orthogonally_right()
 
 if __name__ == '__main__':
     main()
