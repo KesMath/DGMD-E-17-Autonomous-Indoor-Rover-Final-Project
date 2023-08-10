@@ -3,7 +3,6 @@ import board
 import numpy as np
 import adafruit_mpu6050
 
-STRAIGHT_DEGREE = (0, 1) 
 THRESHOLDING_VALUE = (-89, 89)
 SLEEP_DELAY = 1.00e-02
 
