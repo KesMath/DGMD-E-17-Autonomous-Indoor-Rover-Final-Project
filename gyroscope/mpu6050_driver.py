@@ -27,18 +27,35 @@ class GyroscopeDriver():
     def read_yaw(self):
         return np.rad2deg(self.__poll_sensor(2))
 
+    def is_sensor_exceeding_right_threshold(self):
+        while True:
+            yaw = self.read_yaw()
+            if (yaw > RIGHT_THRESHOLD): 
+                print("Right turn in proximity of " + str(RIGHT_THRESHOLD) + ": "  + str(yaw) + "\n")
+                time.sleep(0.01)
+                break
+
+    def is_sensor_exceeding_left_threshold(self):
+        while True:
+            yaw = self.read_yaw()
+            if (yaw < LEFT_THRESHOLD): 
+                print("Left turn in proximity of " + str(LEFT_THRESHOLD) + ": "  + str(yaw) + "\n")
+                time.sleep(0.01)
+                break
 
 def main():
     g_driver = GyroscopeDriver()
-    while True:
-        yaw = g_driver.read_yaw()
-        if (yaw > RIGHT_THRESHOLD): 
-            print("Right turn in proximity of " + str(RIGHT_THRESHOLD) + ": "  + str(yaw) + "\n")
-            time.sleep(0.01)
+    g_driver.is_sensor_exceeding_left_threshold()
+    g_driver.is_sensor_exceeding_right_threshold()
+    # while True:
+    #     yaw = g_driver.read_yaw()
+    #     if (yaw > RIGHT_THRESHOLD): 
+    #         print("Right turn in proximity of " + str(RIGHT_THRESHOLD) + ": "  + str(yaw) + "\n")
+    #         time.sleep(0.01)
 
-        elif (yaw < LEFT_THRESHOLD): 
-            print("Left turn in proximity of " + str(LEFT_THRESHOLD) + ": "  + str(yaw) + "\n")
-            time.sleep(0.01)
+    #     elif (yaw < LEFT_THRESHOLD): 
+    #         print("Left turn in proximity of " + str(LEFT_THRESHOLD) + ": "  + str(yaw) + "\n")
+    #         time.sleep(0.01)
 
 if __name__ == '__main__':
     main()
