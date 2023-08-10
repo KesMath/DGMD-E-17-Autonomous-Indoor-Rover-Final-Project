@@ -48,8 +48,9 @@ class GyroscopeDriver():
 
 def main():
     g_driver = GyroscopeDriver()
-    g_driver.is_sensor_orthogonally_left()
-    g_driver.is_sensor_orthogonally_right()
+    while True:
+        g_driver.is_sensor_orthogonally_left()
+        g_driver.is_sensor_orthogonally_right()
 
 if __name__ == '__main__':
     main()
