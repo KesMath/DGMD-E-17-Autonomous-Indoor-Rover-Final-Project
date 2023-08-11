@@ -161,7 +161,7 @@ async def main():
     print("connecting rover to Viam server...")
     robot_client = await connect()
     roverBase = Base.from_robot(robot_client, 'viam_base')
-    await spin_right_90_degrees(roverBase)
+    await spin_left_90_degrees(roverBase)
     # close server connection
     print("closing client connection to Viam server...")
     await robot_client.close()
