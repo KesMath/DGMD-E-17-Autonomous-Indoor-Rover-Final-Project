@@ -164,7 +164,7 @@ async def main():
     # then it will return back to main thread
 
     p1 = multiprocessing.Process(target=gyroscope_driver.poll_sensor_until_orthogonally_left)
-    p2 = multiprocessing.Process(target=spin_left_90_degrees, args=roverBase)
+    p2 = multiprocessing.Process(target=spin_left_90_degrees, args=(roverBase,))
     print("starting p1...")
     p1.start()
     print("starting p2...")
