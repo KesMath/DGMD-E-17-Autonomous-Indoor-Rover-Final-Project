@@ -30,7 +30,7 @@ class GyroscopeDriver():
 
 
     # determine if orientation is -90deg
-    async def move_sensor_orthogonally_left(self, base: Base):
+    async def move_sensor_orthogonally_left(self):
         while True:
             yaw = self.read_yaw()
             if (yaw < THRESHOLDING_VALUE[0]): 
@@ -38,7 +38,7 @@ class GyroscopeDriver():
                 return
 
     # determine if orientation is +90deg
-    async def move_sensor_orthogonally_right(self, base: Base):
+    async def move_sensor_orthogonally_right(self):
         while True:
             yaw = self.read_yaw()
             if (yaw > THRESHOLDING_VALUE[1]): 
