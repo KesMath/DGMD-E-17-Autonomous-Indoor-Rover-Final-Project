@@ -163,7 +163,6 @@ async def main():
     # when process A finishes (i.e. when rover turns 90deg,) terminate process B (i.e. stop motors from spinning)
     # then it will return back to main thread
 
-    target = await gyroscope_driver.poll_sensor_until_orthogonally_left
     p1 = multiprocessing.Process(target=gyroscope_driver.poll_sensor_until_orthogonally_left)
     p2 = multiprocessing.Process(target=spin_left_90_degrees, args=(roverBase))
     print("starting p1...")
