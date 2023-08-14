@@ -31,10 +31,10 @@ async def move_backward_1_foot(base):
     print("moving backward")
     await base.move_straight(velocity=-625, distance=515)
 
-async def spin_left_90_degrees(base):
+def spin_left_90_degrees(base):
     # Spins the Viam Rover 90 degrees at 100 degrees per second
     print("spinning left 90 degrees")
-    await base.spin(velocity=100, angle=90)
+    base.spin(velocity=100, angle=90)
     
 async def spin_right_90_degrees(base):
     # Spins the Viam Rover 90 degrees at 100 degrees per second
