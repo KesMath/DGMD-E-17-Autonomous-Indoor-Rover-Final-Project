@@ -36,11 +36,6 @@ class GyroscopeDriver():
             if (yaw < THRESHOLDING_VALUE[0]): 
                 print("Orthogonally-Left turn in proximity of " + str(THRESHOLDING_VALUE[0]) + ": "  + str(yaw) + "\n")
                 return
-            else:
-                # Spins the Viam Rover 10 degrees at 10 degrees per second
-                print("yaw: " + str(yaw))
-                await base.spin(velocity=100, angle=20)
-                time.sleep(SLEEP_DELAY)
 
     # determine if orientation is +90deg
     async def move_sensor_orthogonally_right(self, base: Base):
@@ -49,11 +44,6 @@ class GyroscopeDriver():
             if (yaw > THRESHOLDING_VALUE[1]): 
                 print("Orthogonally-Right in proximity of " + str(THRESHOLDING_VALUE[1]) + ": "  + str(yaw) + "\n")
                 return
-            else:
-                # Spins the Viam Rover 10 degrees at 10 degrees per second
-                print("yaw: " + str(yaw))
-                await base.spin(velocity=100, angle=-20)
-                time.sleep(SLEEP_DELAY)
 
 def main():
     g_driver = GyroscopeDriver()
