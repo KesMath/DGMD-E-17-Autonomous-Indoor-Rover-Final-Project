@@ -38,7 +38,8 @@ class GyroscopeDriver():
                 return
             else:
                 # Spins the Viam Rover 10 degrees at 10 degrees per second
-                await base.spin(velocity=10, angle=10)
+                print("yaw: " + str(yaw))
+                await base.spin(velocity=100, angle=10)
                 time.sleep(SLEEP_DELAY * 100)
 
     # determine if orientation is +90deg
@@ -50,7 +51,8 @@ class GyroscopeDriver():
                 return
             else:
                 # Spins the Viam Rover 10 degrees at 10 degrees per second
-                await base.spin(velocity=10, angle=10)
+                print("yaw: " + str(yaw))
+                await base.spin(velocity=100, angle=-10)
                 time.sleep(SLEEP_DELAY * 100)
 
 def main():
