@@ -158,12 +158,22 @@ async def walk_enclosure(base):
 async def main():
     robot_client = await connect()
     roverBase = Base.from_robot(robot_client, 'viam_base')
-    
+
     # GOAL: Dispatch 2 processes - Process A for Sensor Polling, Process B for motor spinning
     # when process A finishes (i.e. when rover turns 90deg,) terminate process B (i.e. stop motors from spinning)
     # then it will return back to main thread
-    gyroscope_driver.poll_sensor_until_orthogonally_left()
-    await spin_right_90_degrees(roverBase)
+
+    p1 = multiprocessing.Process(target=gyroscope_driver.poll_sensor_until_orthogonally_left)
+    p2 = multiprocessing.Process(target=spin_left_90_degrees, args=(roverBase))
+    p1.start()
+    p2.start()
+
+    while not(p1.is_alive()):
+        # terminate process
+        print("terminating [spin_left_90_degrees()] process...")
+        p2.terminate()
+
+    print("closing connection...")
     await robot_client.close()
 if __name__ == '__main__':
     asyncio.run(main())
