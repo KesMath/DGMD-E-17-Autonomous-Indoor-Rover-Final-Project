@@ -1,5 +1,6 @@
 import time
 import asyncio
+import multiprocessing
 from path_planning.grid_maps import *
 from path_planning.dijkstra_path_planner import *
 from gyroscope.mpu6050_driver import GyroscopeDriver
@@ -157,8 +158,12 @@ async def walk_enclosure(base):
 async def main():
     robot_client = await connect()
     roverBase = Base.from_robot(robot_client, 'viam_base')
+    
+    # GOAL: Dispatch 2 processes - Process A for Sensor Polling, Process B for motor spinning
+    # when process A finishes (i.e. when rover turns 90deg,) terminate process B (i.e. stop motors from spinning)
+    # then it will return back to main thread
+    gyroscope_driver.poll_sensor_until_orthogonally_left()
     await spin_right_90_degrees(roverBase)
-    #gyroscope_driver.move_sensor_orthogonally_left()
     await robot_client.close()
 if __name__ == '__main__':
     asyncio.run(main())
