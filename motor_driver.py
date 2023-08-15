@@ -186,13 +186,13 @@ async def main():
 
         # when process A finishes (i.e. when rover turns 90deg,) terminate process B (i.e. stop motors from spinning)
         #executor will automatically shutdown when control flow exits context manager
-        concurrent.futures.wait(f1, return_when=concurrent.futures.FIRST_COMPLETED)
+        #concurrent.futures.wait(f1, return_when=concurrent.futures.FIRST_COMPLETED)
         
 
-        # while f1.done():
-        #     # terminate process
-        #     print("terminating \"spin_left_90_degrees()\" process...")
-        #     executor.shutdown(wait=True)
+        while f1.done():
+            # terminate process
+            print("terminating \"spin_left_90_degrees()\" process...")
+            executor.shutdown(wait=True)
     
     print("closing connection...")
 
