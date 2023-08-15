@@ -177,6 +177,7 @@ async def main():
             # terminate process
             print("terminating \"spin_left_90_degrees()\" process...")
             executor.shutdown(wait=True)
+            print("test...")
 
         print("exiting context manager...")
 
