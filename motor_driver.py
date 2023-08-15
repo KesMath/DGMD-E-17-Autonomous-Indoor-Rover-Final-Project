@@ -167,22 +167,21 @@ async def main():
         f1 = executor.submit(gyroscope_driver.poll_sensor_until_orthogonally_left)
         f2 = executor.submit(spin_left_90_degrees, roverBase)
 
+        time.sleep(10)
         print("F1 running after submit(): " + str(f1.running()))
         print("F2 running after submit(): " + str(f2.running()))
+
         # when process A finishes (i.e. when rover turns 90deg,) terminate process B (i.e. stop motors from spinning)
         #executor will automatically shutdown when control flow exits context manager
         while f1.running():
             # terminate process
             print("F1 running: " + str(f1.running()))
-            print("F2 running: " + str(f2.running()))
+            print("F2 running: " + str(f2.running()))     
             if f1.done():
                 print("terminating \"spin_left_90_degrees()\" process...")
                 executor.shutdown(wait=True)
 
-        print("exiting context manager...")
-
     print("closing connection...")
-
     await robot_client.close()
 if __name__ == '__main__':
     asyncio.run(main())
