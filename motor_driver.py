@@ -164,19 +164,19 @@ async def main():
     # Dispatch 2 processes - Process A for Sensor Polling, Process B for motor spinning
     with concurrent.futures.ProcessPoolExecutor() as executor:
         print("executing processes...")
-        f1 = executor.submit(gyroscope_driver.poll_sensor_until_orthogonally_left)
-        f2 = executor.submit(spin_left_90_degrees, roverBase)
+        p1 = executor.submit(gyroscope_driver.poll_sensor_until_orthogonally_left)
+        p2 = executor.submit(spin_left_90_degrees, roverBase)
 
-        print("F1 running after submit(): " + str(f1.running()))
-        print("F2 running after submit(): " + str(f2.running()))
+        print("Process1 running after submit(): " + str(p1.running()))
+        print("Process2 running after submit(): " + str(p2.running()))
 
         # when process A finishes (i.e. when rover turns 90deg,) terminate process B (i.e. stop motors from spinning)
         #executor will automatically shutdown when control flow exits context manager
-        while f1.running():
+        while p1.running():
             # terminate process
-            print("F1 running: " + str(f1.running()))
-            print("F2 running: " + str(f2.running()))     
-            if f1.done():
+            print("Process1 running: " + str(p1.running()))
+            print("Process2 running: " + str(p2.running()))     
+            if p1.done():
                 print("terminating \"spin_left_90_degrees()\" process...")
                 executor.shutdown(wait=True)
 
