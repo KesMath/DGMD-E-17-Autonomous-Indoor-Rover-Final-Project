@@ -1,6 +1,6 @@
 import time
 import asyncio
-import multiprocessing
+import concurrent.futures
 from path_planning.grid_maps import *
 from path_planning.dijkstra_path_planner import *
 from gyroscope.mpu6050_driver import GyroscopeDriver
@@ -159,23 +159,43 @@ async def main():
     robot_client = await connect()
     roverBase = Base.from_robot(robot_client, 'viam_base')
 
-    # Dispatch 2 processes - Process A for Sensor Polling, Process B for motor spinning
+    # # Dispatch 2 processes - Process A for Sensor Polling, Process B for motor spinning
     
-    p1 = multiprocessing.Process(target=gyroscope_driver.poll_sensor_until_orthogonally_left)
-    p2 = multiprocessing.Process(target=spin_left_90_degrees, args=(roverBase,))
-    print("starting p1...")
-    p1.start()
-    print("starting p2...")
-    p2.start()
+    # p1 = multiprocessing.Process(target=gyroscope_driver.poll_sensor_until_orthogonally_left)
+    # p2 = multiprocessing.Process(target=spin_left_90_degrees, args=(roverBase,))
+    # print("starting p1...")
+    # p1.start()
+    # print("starting p2...")
+    # p2.start()
 
-    # when process A finishes (i.e. when rover turns 90deg,) terminate process B (i.e. stop motors from spinning)
-    while not(p1.is_alive()):
-        # terminate process
-        print("terminating [spin_left_90_degrees()] process...")
-        p2.terminate()
+    # # when process A finishes (i.e. when rover turns 90deg,) terminate process B (i.e. stop motors from spinning)
+    # while p1.is_alive():
+    #     # terminate process
+    #     print("terminating [spin_left_90_degrees()] process...")
+    #     p2.terminate()
 
-    # return back to main thread
+
+    # print("closing connection...")
+
+    ########################## TESTING WITH ProcessPoolExecutor() ##########################
+
+    # Dispatch 2 processes - Process A for Sensor Polling, Process B for motor spinning
+    with concurrent.futures.ProcessPoolExecutor() as executor:
+        f1 = executor.submit(gyroscope_driver.poll_sensor_until_orthogonally_left)
+        executor.submit(spin_left_90_degrees, roverBase)
+
+        # when process A finishes (i.e. when rover turns 90deg,) terminate process B (i.e. stop motors from spinning)
+        #executor will automatically shutdown when control flow exits context manager
+        concurrent.futures.wait(f1, return_when=concurrent.futures.FIRST_COMPLETED)
+        
+
+        # while f1.done():
+        #     # terminate process
+        #     print("terminating \"spin_left_90_degrees()\" process...")
+        #     executor.shutdown(wait=True)
+    
     print("closing connection...")
+
     await robot_client.close()
 if __name__ == '__main__':
     asyncio.run(main())
