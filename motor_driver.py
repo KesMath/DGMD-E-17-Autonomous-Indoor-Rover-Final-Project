@@ -183,8 +183,10 @@ async def main():
     with concurrent.futures.ProcessPoolExecutor() as executor:
         print("executing processes...")
         f1 = executor.submit(gyroscope_driver.poll_sensor_until_orthogonally_left)
-        executor.submit(spin_left_90_degrees, roverBase)
+        f2 = executor.submit(spin_left_90_degrees, roverBase)
 
+        print("F1 running: " + str(f1.running()))
+        print("F2 running: " + str(f2.running()))
         # when process A finishes (i.e. when rover turns 90deg,) terminate process B (i.e. stop motors from spinning)
         #executor will automatically shutdown when control flow exits context manager
         #concurrent.futures.wait(f1, return_when=concurrent.futures.FIRST_COMPLETED)
@@ -193,7 +195,9 @@ async def main():
             # terminate process
             print("terminating \"spin_left_90_degrees()\" process...")
             executor.shutdown(wait=True)
-    
+
+        print("exiting context manager...")
+
     print("closing connection...")
 
     await robot_client.close()
