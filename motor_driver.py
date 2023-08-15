@@ -167,7 +167,6 @@ async def main():
         f1 = executor.submit(gyroscope_driver.poll_sensor_until_orthogonally_left)
         f2 = executor.submit(spin_left_90_degrees, roverBase)
 
-        time.sleep(10)
         print("F1 running after submit(): " + str(f1.running()))
         print("F2 running after submit(): " + str(f2.running()))
 
