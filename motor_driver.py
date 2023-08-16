@@ -186,8 +186,8 @@ async def main():
         #executor will automatically shutdown when control flow exits context manager
         print("Process1 running: " + str(p1.running()))
         print("Process2 running: " + str(p2.running()))
-        print("Pool is running: " + str(pool.active))
-        while p1.running():
+        
+        while pool.active:
             # terminate process
             print("Process1 running: " + str(p1.running()))
             print("Process2 running: " + str(p2.running()))     
