@@ -1,6 +1,6 @@
 import time
 import asyncio
-from Pebble.pebble import ProcessPool
+from pebble import ProcessPool
 from path_planning.grid_maps import *
 from path_planning.dijkstra_path_planner import *
 from gyroscope.mpu6050_driver import GyroscopeDriver
