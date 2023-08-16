@@ -1,6 +1,6 @@
 import time
 import asyncio
-from pebble import ProcessPool
+from Pebble.pebble import ProcessPool
 from path_planning.grid_maps import *
 from path_planning.dijkstra_path_planner import *
 from gyroscope.mpu6050_driver import GyroscopeDriver
@@ -176,7 +176,7 @@ async def main():
     ########################## TESTING WITH ProcessPool() ##########################
 
     # Dispatch 2 processes - Process A for Sensor Polling, Process B for motor spinning
-    with pebble.ProcessPool() as pool:
+    with ProcessPool() as pool:
         print("executing processes...")
         p1 = pool.schedule(test_fn1)
         p2 = pool.schedule(test_fn2)
