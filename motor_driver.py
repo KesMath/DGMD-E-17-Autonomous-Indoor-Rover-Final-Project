@@ -155,6 +155,20 @@ async def walk_enclosure(base):
 #     print("closing client connection to Viam server...")
 #     await robot_client.close()
 
+###### Sanity Check ProcessPool ##########
+def test_fn1():
+    # mocks gyroscope polling - since it stops eventually
+    i = 0
+    while i < 50:
+        print("process1 triggered!" + str(i))
+        i+=1
+        time.sleep(0.1)
+
+def test_fn2():
+    # mocks motor spinning - since it goes on indefinitely
+    while True:
+        print("process2 triggered!")
+
 async def main():
     robot_client = await connect()
     roverBase = Base.from_robot(robot_client, 'viam_base')
@@ -164,8 +178,8 @@ async def main():
     # Dispatch 2 processes - Process A for Sensor Polling, Process B for motor spinning
     with concurrent.futures.ProcessPoolExecutor() as executor:
         print("executing processes...")
-        p1 = executor.submit(gyroscope_driver.poll_sensor_until_orthogonally_left)
-        p2 = executor.submit(spin_left_90_degrees, roverBase)
+        p1 = executor.submit(test_fn1)
+        p2 = executor.submit(test_fn2)
 
         print("Process1 running after submit(): " + str(p1.running()))
         print("Process2 running after submit(): " + str(p2.running()))
