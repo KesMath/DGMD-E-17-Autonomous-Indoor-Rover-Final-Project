@@ -160,7 +160,7 @@ def test_fn1():
     # mocks gyroscope polling - since it stops eventually
     i = 0
     while i < 50:
-        print("process1 triggered!" + str(i))
+        print("process1 triggered! " + str(i))
         i+=1
         time.sleep(0.1)
 
@@ -181,8 +181,8 @@ async def main():
         p1 = executor.submit(test_fn1)
         p2 = executor.submit(test_fn2)
 
-        print("Process1 running after submit(): " + str(p1.running()))
-        print("Process2 running after submit(): " + str(p2.running()))
+        #print("Process1 running after submit(): " + str(p1.running()))
+        #print("Process2 running after submit(): " + str(p2.running()))
 
         # when process A finishes (i.e. when rover turns 90deg,) terminate process B (i.e. stop motors from spinning)
         #executor will automatically shutdown when control flow exits context manager
