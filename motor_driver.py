@@ -1,6 +1,6 @@
 import time
 import asyncio
-import concurrent.futures
+from pebble import ProcessPool
 from path_planning.grid_maps import *
 from path_planning.dijkstra_path_planner import *
 from gyroscope.mpu6050_driver import GyroscopeDriver
@@ -173,13 +173,13 @@ async def main():
     robot_client = await connect()
     roverBase = Base.from_robot(robot_client, 'viam_base')
 
-    ########################## TESTING WITH ProcessPoolExecutor() ##########################
+    ########################## TESTING WITH ProcessPool() ##########################
 
     # Dispatch 2 processes - Process A for Sensor Polling, Process B for motor spinning
-    with concurrent.futures.ProcessPoolExecutor() as executor:
+    with pebble.ProcessPool() as pool:
         print("executing processes...")
-        p1 = executor.submit(test_fn1)
-        p2 = executor.submit(test_fn2)
+        p1 = pool.schedule(test_fn1)
+        p2 = pool.schedule(test_fn2)
 
         #print("Process1 running after submit(): " + str(p1.running()))
         #print("Process2 running after submit(): " + str(p2.running()))
@@ -192,7 +192,6 @@ async def main():
             print("Process2 running: " + str(p2.running()))     
             if p1.done():
                 print("terminating \"spin_left_90_degrees()\" process...")
-                # FIXME - need proper way to kill p2!
                 p2.cancel()
 
 
