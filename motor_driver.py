@@ -198,12 +198,12 @@ async def main():
                 # confirm processes successfully killed
                 assert p2.done()
                 assert p1.done()
-                
+
                 # shutdown pool to break out of looping conditional
                 pool.stop()
         
         # confirming pool closed
-        assert not pool.active()
+        assert not pool.active
 
     print("closing connection...")
     await robot_client.close()
