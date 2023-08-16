@@ -184,9 +184,6 @@ async def main():
 
         # when process A finishes (i.e. when rover turns 90deg,) terminate process B (i.e. stop motors from spinning)
         #executor will automatically shutdown when control flow exits context manager
-        print("Process1 running: " + str(p1.running()))
-        print("Process2 running: " + str(p2.running()))
-        
         while pool.active:
             # terminate process
             print("Process1 running: " + str(p1.running()))
@@ -197,10 +194,15 @@ async def main():
                 # This class inherits from concurrent.futures.Future.
                 # The sole difference with the parent class is the possibility to cancel running calls.
                 p2.cancel()
-                # confirm process successfully killed
+
+                # confirm processes successfully killed
                 assert p2.done()
+                assert p1.done()
+                
+                # shutdown pool to break out of looping conditional
+                pool.stop()
         
-        # confirming no orphaned processes
+        # confirming pool closed
         assert not pool.active()
 
     print("closing connection...")
