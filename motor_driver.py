@@ -192,9 +192,10 @@ async def main():
             print("Process2 running: " + str(p2.running()))     
             if p1.done():
                 print("terminating \"spin_left_90_degrees()\" process...")
-                break
-                #executor.shutdown(wait=False)
-        del p2
+                # FIXME - need proper way to kill p2!
+                p2.cancel()
+
+
     print("closing connection...")
     await robot_client.close()
 if __name__ == '__main__':
