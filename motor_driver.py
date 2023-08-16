@@ -160,14 +160,15 @@ def test_fn1():
     # mocks gyroscope polling - since it stops eventually
     i = 0
     while i < 5:
-        print("process1 triggered! " + str(i))
+        #print("process1 triggered! " + str(i))
         i+=1
         time.sleep(0.1)
 
 def test_fn2():
     # mocks motor spinning - since it goes on indefinitely
     while True:
-        print("process2 triggered!")
+        continue
+        #print("process2 triggered!")
 
 async def main():
     robot_client = await connect()
@@ -181,19 +182,26 @@ async def main():
         p1 = pool.schedule(test_fn1)
         p2 = pool.schedule(test_fn2)
 
-        #print("Process1 running after submit(): " + str(p1.running()))
-        #print("Process2 running after submit(): " + str(p2.running()))
-
         # when process A finishes (i.e. when rover turns 90deg,) terminate process B (i.e. stop motors from spinning)
         #executor will automatically shutdown when control flow exits context manager
+        print("Process1 running: " + str(p1.running()))
+        print("Process2 running: " + str(p2.running()))
+        print("Pool is running: " + str(pool.active()))
         while p1.running():
             # terminate process
             print("Process1 running: " + str(p1.running()))
             print("Process2 running: " + str(p2.running()))     
             if p1.done():
                 print("terminating \"spin_left_90_degrees()\" process...")
+                # https://pebble.readthedocs.io/en/latest/#pebble-processfuture
+                # This class inherits from concurrent.futures.Future.
+                # The sole difference with the parent class is the possibility to cancel running calls.
                 p2.cancel()
-
+                # confirm process successfully killed
+                assert p2.done()
+        
+        # confirming no orphaned processes
+        assert not pool.active()
 
     print("closing connection...")
     await robot_client.close()
