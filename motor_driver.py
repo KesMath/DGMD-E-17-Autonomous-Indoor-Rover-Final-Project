@@ -159,7 +159,7 @@ async def walk_enclosure(base):
 def test_fn1():
     # mocks gyroscope polling - since it stops eventually
     i = 0
-    while i < 50:
+    while i < 5:
         print("process1 triggered! " + str(i))
         i+=1
         time.sleep(0.1)
