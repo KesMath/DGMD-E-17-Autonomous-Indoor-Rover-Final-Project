@@ -175,8 +175,6 @@ def test_fn2():
 async def main():
     robot_client = await connect()
     roverBase = Base.from_robot(robot_client, 'viam_base')
-    await spin_left_90_degrees(roverBase)
-    gyroscope_driver.poll_sensor_until_orthogonally_left()
     ########################## TESTING WITH ProcessPool() ##########################
 
     # Dispatch 2 processes - Process A for Sensor Polling, Process B for motor spinning
@@ -184,8 +182,8 @@ async def main():
         print("executing processes...")
         #p1 = pool.schedule(test_fn1)
         #p2 = pool.schedule(test_fn2)
-        p1 = pool.schedule(gyroscope_driver.poll_sensor_until_orthogonally_left)
         p2 = pool.schedule(spin_left_90_degrees, roverBase)
+        p1 = pool.schedule(gyroscope_driver.poll_sensor_until_orthogonally_left)
         
         # when process A finishes (i.e. when rover turns 90deg,) terminate process B (i.e. stop motors from spinning)
         #executor will automatically shutdown when control flow exits context manager
