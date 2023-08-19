@@ -181,7 +181,9 @@ async def main():
     with ProcessPool() as pool:
         print("executing processes...")
         p1 = pool.schedule(test_fn1)
-        p2 = pool.schedule(spin_left_90_degrees, roverBase)
+        p2 = pool.schedule(test_fn2)
+        #p1 = pool.schedule(gyroscope_driver.poll_sensor_until_orthogonally_left)
+        #p2 = pool.schedule(spin_left_90_degrees, roverBase)
 
         # when process A finishes (i.e. when rover turns 90deg,) terminate process B (i.e. stop motors from spinning)
         #executor will automatically shutdown when control flow exits context manager
