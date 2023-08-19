@@ -185,7 +185,7 @@ async def main():
         #p1 = pool.schedule(gyroscope_driver.poll_sensor_until_orthogonally_left)
         #p2 = pool.schedule(spin_left_90_degrees, roverBase)
 
-        p1.result()
+        p1.result() # blocks until process completes!
         p2.cancel()
         assert p1.done()
         assert p2.done()
