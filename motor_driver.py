@@ -175,7 +175,7 @@ def test_fn2():
 async def main():
     robot_client = await connect()
     roverBase = Base.from_robot(robot_client, 'viam_base')
-
+    gyroscope_driver.poll_sensor_until_orthogonally_left()
     ########################## TESTING WITH ProcessPool() ##########################
 
     # Dispatch 2 processes - Process A for Sensor Polling, Process B for motor spinning
