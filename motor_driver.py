@@ -172,6 +172,29 @@ def test_fn2():
     while True:
         continue
 
+import board
+import adafruit_mpu6050
+import numpy as np
+i2c = board.I2C()  # uses board.SCL and board.SDA
+mpu = adafruit_mpu6050.MPU6050(i2c)
+THRESHOLDING_VALUE = (-89, 89)
+
+def poll_sensor(self, index: int):
+    return self.mpu.gyro[index]
+
+# orientation in Z-Axis
+def read_yaw(self):
+    return np.rad2deg(self.__poll_sensor(2))
+
+def poll_sensor_until_orthogonally_left(self):
+    while True:
+        yaw = self.read_yaw()
+        if (yaw < THRESHOLDING_VALUE[0]): 
+            print("Orthogonally-Left turn in proximity of " + str(THRESHOLDING_VALUE[0]) + ": "  + str(yaw) + "\n")
+            return
+        else:
+            print("yaw:" + str(yaw))
+
 async def main():
     robot_client = await connect()
     roverBase = Base.from_robot(robot_client, 'viam_base')
@@ -182,7 +205,7 @@ async def main():
         print("executing processes...")
         #p1 = pool.schedule(test_fn1)
         p2 = pool.schedule(test_fn2)
-        p1 = pool.schedule(gyroscope_driver.poll_sensor_until_orthogonally_left)
+        p1 = pool.schedule(poll_sensor_until_orthogonally_left)
         #p2 = pool.schedule(spin_left_90_degrees, roverBase)
 
         p1.result() # blocks until process completes!
