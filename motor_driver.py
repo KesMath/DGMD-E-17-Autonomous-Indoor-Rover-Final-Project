@@ -164,7 +164,7 @@ async def test_fn1():
         i+=1
         time.sleep(0.1)
     print("i = " + str(i))
-    return
+    return i
 
 async def test_fn2():
     # mocks motor spinning - since it goes on indefinitely
@@ -179,8 +179,9 @@ async def main():
     ### TECHNIQUE 1 
     task1 = asyncio.create_task(test_fn1())
     task2 = asyncio.create_task(test_fn2())
-    #await task1 # this should hold task1
-    await asyncio.wait(task1) # this should also hold task1
+    print("Result of Task1: " + str(task1.result()))
+    await task1 # this should hold task1
+    #await asyncio.wait(task1) # this should also hold task1
     task2.cancel()
 
     ### TECHNIQUE 2
