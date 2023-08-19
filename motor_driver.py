@@ -183,43 +183,43 @@ async def main():
     ### TECHNIQUE 2
     # Dispatch 2 processes - Process A for Sensor Polling, Process B for motor spinning
     with ProcessPool() as pool:
-        print("executing processes...")
-        #p1 = pool.schedule(test_fn1)
-        #p2 = pool.schedule(test_fn2)
+        # print("executing processes...")
+        # #p1 = pool.schedule(test_fn1)
+        # #p2 = pool.schedule(test_fn2)
         p1 = pool.schedule(gyroscope_driver.poll_sensor_until_orthogonally_left)
         p2 = pool.schedule(spin_left_90_degrees, roverBase)
 
-        p1.result() # blocks until process completes!
-        p2.cancel()
-        assert p1.done()
-        assert p2.done()
+        # p1.result() # blocks until process completes!
+        # p2.cancel()
+        # assert p1.done()
+        # assert p2.done()
 
-        pool.stop()
-        pool.join()
+        # pool.stop()
+        # pool.join()
 
         ### TECHNIQUE 3
         # when process A finishes (i.e. when rover turns 90deg,) terminate process B (i.e. stop motors from spinning)
         #executor will automatically shutdown when control flow exits context manager
-        # while pool.active:
-        #     # terminate process
-        #     print("Process1 running: " + str(p1.running()))
-        #     print("Process2 running: " + str(p2.running()))   
-        #     if p1.done():
-        #         print("terminating \"spin_left_90_degrees()\" process...")
-        #         # https://pebble.readthedocs.io/en/latest/#pebble-processfuture
-        #         # This class inherits from concurrent.futures.Future.
-        #         # The sole difference with the parent class is the possibility to cancel running calls.
-        #         p2.cancel()
+        while pool.active:
+            # terminate process
+            print("Process1 running: " + str(p1.running()))
+            print("Process2 running: " + str(p2.running()))   
+            if p1.done():
+                print("terminating \"spin_left_90_degrees()\" process...")
+                # https://pebble.readthedocs.io/en/latest/#pebble-processfuture
+                # This class inherits from concurrent.futures.Future.
+                # The sole difference with the parent class is the possibility to cancel running calls.
+                p2.cancel()
 
-        #         # confirm processes successfully killed
-        #         assert p2.done()
-        #         assert p1.done()
+                # confirm processes successfully killed
+                assert p2.done()
+                assert p1.done()
 
-        #         # shutdown pool to break out of looping conditional
-        #         pool.stop()
+                # shutdown pool to break out of looping conditional
+                pool.stop()
         
-        # # confirming pool closed
-        # assert not pool.active
+        # confirming pool closed
+        assert not pool.active
 
     print("closing connection...")
     await robot_client.close()
