@@ -190,8 +190,8 @@ async def main():
         #executor will automatically shutdown when control flow exits context manager
         while pool.active:
             # terminate process
-            print("Process1 running: " + str(p1.running()))
-            print("Process2 running: " + str(p2.running()))   
+            #print("Process1 running: " + str(p1.running()))
+            #print("Process2 running: " + str(p2.running()))   
             if p1.done():
                 print("terminating \"spin_left_90_degrees()\" process...")
                 # https://pebble.readthedocs.io/en/latest/#pebble-processfuture
