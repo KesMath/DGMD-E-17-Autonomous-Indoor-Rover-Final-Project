@@ -163,12 +163,12 @@ async def test_fn1():
         #print("process1 triggered! " + str(i))
         i+=1
         time.sleep(1)
-    print("i = " + str(i))
+    print("i = " + str(i), flush=True)
     return i
 
 async def test_fn2():
     # mocks motor spinning - since it goes on indefinitely
-    print("test_fn2() firing...")
+    print("test_fn2() firing...", flush=True)
     while True:
         continue
 
@@ -179,9 +179,8 @@ async def main():
     ### TECHNIQUE 1 
     task1 = asyncio.create_task(test_fn1())
     task2 = asyncio.create_task(test_fn2())
-    await task1 # holding until task1
     print("Result of Task1: " + str(task1.result()))
-    #await asyncio.wait(task1, return_when=FIRST_COMPLETED) # this should also hold task1
+    await asyncio.wait(task1, return_when=asyncio.FIRST_COMPLETED)
     task2.cancel()
 
     ### TECHNIQUE 2
