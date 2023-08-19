@@ -156,7 +156,7 @@ async def walk_enclosure(base):
 #     await robot_client.close()
 
 ###### Sanity Check ProcessPool ##########
-def test_fn1():
+async def test_fn1():
     # mocks gyroscope polling - since it stops eventually
     i = 0
     while i < 5:
@@ -166,7 +166,7 @@ def test_fn1():
     print("i = " + str(i))
     return
 
-def test_fn2():
+async def test_fn2():
     # mocks motor spinning - since it goes on indefinitely
     print("test_fn2() firing...")
     while True:
@@ -176,50 +176,53 @@ async def main():
     robot_client = await connect()
     roverBase = Base.from_robot(robot_client, 'viam_base')
     ########################## TESTING WITH ProcessPool() ##########################
-    ### TECHNIQUE 1
-
-
+    ### TECHNIQUE 1 
+    task1 = asyncio.create_task(test_fn1())
+    task2 = asyncio.create_task(test_fn2())
+    #await task1 # this should hold task1
+    await asyncio.wait(task1) # this should also hold task1
+    task2.cancel()
 
     ### TECHNIQUE 2
     # Dispatch 2 processes - Process A for Sensor Polling, Process B for motor spinning
-    with ProcessPool() as pool:
-        # print("executing processes...")
-        # #p1 = pool.schedule(test_fn1)
-        # #p2 = pool.schedule(test_fn2)
-        p1 = pool.schedule(gyroscope_driver.poll_sensor_until_orthogonally_left)
-        p2 = pool.schedule(spin_left_90_degrees, roverBase)
+    # with ProcessPool() as pool:
+    #     print("executing processes...")
+    #     #p1 = pool.schedule(test_fn1)
+    #     #p2 = pool.schedule(test_fn2)
+    #     p1 = pool.schedule(gyroscope_driver.poll_sensor_until_orthogonally_left)
+    #     p2 = pool.schedule(spin_left_90_degrees, roverBase)
 
-        # p1.result() # blocks until process completes!
-        # p2.cancel()
-        # assert p1.done()
-        # assert p2.done()
+    #     p1.result() # blocks until process completes!
+    #     p2.cancel()
+    #     assert p1.done()
+    #     assert p2.done()
 
-        # pool.stop()
-        # pool.join()
+    #     pool.stop()
+    #     pool.join()
 
         ### TECHNIQUE 3
         # when process A finishes (i.e. when rover turns 90deg,) terminate process B (i.e. stop motors from spinning)
         #executor will automatically shutdown when control flow exits context manager
-        while pool.active:
-            # terminate process
-            print("Process1 running: " + str(p1.running()))
-            print("Process2 running: " + str(p2.running()))   
-            if p1.done():
-                print("terminating \"spin_left_90_degrees()\" process...")
-                # https://pebble.readthedocs.io/en/latest/#pebble-processfuture
-                # This class inherits from concurrent.futures.Future.
-                # The sole difference with the parent class is the possibility to cancel running calls.
-                p2.cancel()
+        # while pool.active:
+        #     # terminate process
+        #     print("Process1 running: " + str(p1.running()))
+        #     print("Process2 running: " + str(p2.running()))   
+        #     if p1.done():
+        #         print("terminating \"spin_left_90_degrees()\" process...")
+        #         # https://pebble.readthedocs.io/en/latest/#pebble-processfuture
+        #         # This class inherits from concurrent.futures.Future.
+        #         # The sole difference with the parent class is the possibility to cancel running calls.
+        #         p2.cancel()
 
-                # confirm processes successfully killed
-                assert p2.done()
-                assert p1.done()
+        #         # confirm processes successfully killed
+        #         assert p2.done()
+        #         assert p1.done()
 
-                # shutdown pool to break out of looping conditional
-                pool.stop()
+        #         # shutdown pool to break out of looping conditional
+        #         pool.stop()
         
-        # confirming pool closed
-        assert not pool.active
+        # # confirming pool closed
+        # assert not pool.active
 
     print("closing connection...")
     await robot_client.close()
