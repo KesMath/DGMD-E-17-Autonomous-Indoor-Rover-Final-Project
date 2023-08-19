@@ -168,8 +168,9 @@ def test_fn1():
 
 def test_fn2():
     # mocks motor spinning - since it goes on indefinitely
+    print("test_fn2() firing...")
     while True:
-        print("process2 triggered!")
+        continue
 
 async def main():
     robot_client = await connect()
