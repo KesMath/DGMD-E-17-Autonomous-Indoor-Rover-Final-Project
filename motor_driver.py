@@ -163,6 +163,8 @@ def test_fn1():
         #print("process1 triggered! " + str(i))
         i+=1
         time.sleep(0.1)
+    print("i = " + str(i))
+    return
 
 def test_fn2():
     # mocks motor spinning - since it goes on indefinitely
