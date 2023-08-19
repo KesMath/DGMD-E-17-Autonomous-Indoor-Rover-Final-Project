@@ -159,10 +159,10 @@ async def walk_enclosure(base):
 async def test_fn1():
     # mocks gyroscope polling - since it stops eventually
     i = 0
-    while i < 5:
+    while i < 20:
         #print("process1 triggered! " + str(i))
         i+=1
-        time.sleep(0.1)
+        time.sleep(1)
     print("i = " + str(i))
     return i
 
@@ -179,9 +179,9 @@ async def main():
     ### TECHNIQUE 1 
     task1 = asyncio.create_task(test_fn1())
     task2 = asyncio.create_task(test_fn2())
+    await task1 # holding until task1
     print("Result of Task1: " + str(task1.result()))
-    await task1 # this should hold task1
-    #await asyncio.wait(task1) # this should also hold task1
+    #await asyncio.wait(task1, return_when=FIRST_COMPLETED) # this should also hold task1
     task2.cancel()
 
     ### TECHNIQUE 2
