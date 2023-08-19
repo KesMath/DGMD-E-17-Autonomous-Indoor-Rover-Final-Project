@@ -2,6 +2,8 @@ import cv2 as cv
 
 # https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html
 
+# [ WARN:0@0.298] global cap_v4l.cpp:982 open VIDEOIO(V4L2:/dev/video0): can't open camera by index
+# [ERROR:0@0.303] global obsensor_uvc_stream_channel.cpp:156 getStreamChannelGroup Camera index out of range
 class VideoCapture():
     def __init__(self):
         self.cap = None
