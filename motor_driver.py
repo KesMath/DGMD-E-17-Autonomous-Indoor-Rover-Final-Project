@@ -185,13 +185,14 @@ async def main():
         p2 = pool.schedule(test_fn2)
         p1 = pool.schedule(gyroscope_driver.poll_sensor_until_orthogonally_left)
         #p2 = pool.schedule(spin_left_90_degrees, roverBase)
-
+        
+        time.sleep(30)
         # when process A finishes (i.e. when rover turns 90deg,) terminate process B (i.e. stop motors from spinning)
         #executor will automatically shutdown when control flow exits context manager
         while pool.active:
             # terminate process
-            #print("Process1 running: " + str(p1.running()))
-            #print("Process2 running: " + str(p2.running()))   
+            print("Process1 running: " + str(p1.running()))
+            print("Process2 running: " + str(p2.running()))   
             if p1.done():
                 print("terminating \"spin_left_90_degrees()\" process...")
                 # https://pebble.readthedocs.io/en/latest/#pebble-processfuture
