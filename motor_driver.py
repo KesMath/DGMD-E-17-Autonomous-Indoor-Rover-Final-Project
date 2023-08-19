@@ -189,7 +189,8 @@ async def main():
         while pool.active:
             # terminate process
             print("Process1 running: " + str(p1.running()))
-            print("Process2 running: " + str(p2.running()))     
+            print("Process2 running: " + str(p2.running()))
+            print("Process1 done: " + str(p1.done()))     
             if p1.done():
                 print("terminating \"spin_left_90_degrees()\" process...")
                 # https://pebble.readthedocs.io/en/latest/#pebble-processfuture

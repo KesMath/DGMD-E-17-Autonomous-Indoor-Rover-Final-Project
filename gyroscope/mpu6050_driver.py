@@ -27,24 +27,15 @@ class GyroscopeDriver():
     def read_yaw(self):
         return np.rad2deg(self.__poll_sensor(2))
 
-
     # determine if orientation is -90deg
     def poll_sensor_until_orthogonally_left(self):
-        # while True:
-        #     yaw = self.read_yaw()
-        #     if (yaw < THRESHOLDING_VALUE[0]): 
-        #         print("Orthogonally-Left turn in proximity of " + str(THRESHOLDING_VALUE[0]) + ": "  + str(yaw) + "\n")
-        #         return
-        #     else:
-        #         print("yaw:" + str(yaw))
-        # mocks gyroscope polling - since it stops eventually
-        i = 0
-        while i < 5:
-            #print("process1 triggered! " + str(i))
-            i+=1
-            time.sleep(0.1)
-        print("i = " + str(i))
-        return
+        while True:
+            yaw = self.read_yaw()
+            if (yaw < THRESHOLDING_VALUE[0]): 
+                print("Orthogonally-Left turn in proximity of " + str(THRESHOLDING_VALUE[0]) + ": "  + str(yaw) + "\n")
+                return
+            else:
+                print("yaw:" + str(yaw))
 
     # determine if orientation is +90deg
     def poll_sensor_until_orthogonally_right(self):
