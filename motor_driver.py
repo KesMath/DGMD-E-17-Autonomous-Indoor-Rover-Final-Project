@@ -187,9 +187,9 @@ async def main():
 
         p1.result()
         p2.cancel()
+        pool.join()
         assert p1.done()
         assert p2.done()
-        p1.join()
         
         # when process A finishes (i.e. when rover turns 90deg,) terminate process B (i.e. stop motors from spinning)
         #executor will automatically shutdown when control flow exits context manager
