@@ -182,7 +182,8 @@ async def main():
     print("scheduling task2...")
     task2 = asyncio.create_task(test_fn2())
     print("Result of Task1: " + str(task1.result()))
-    await asyncio.wait(task1, return_when=asyncio.FIRST_COMPLETED)
+    print("Task1 Done:" + task1.done())
+    print("Task2 Done:" + task2.done())
     task2.cancel()
 
     ### TECHNIQUE 2
