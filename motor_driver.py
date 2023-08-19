@@ -159,7 +159,7 @@ async def walk_enclosure(base):
 async def test_fn1():
     # mocks gyroscope polling - since it stops eventually
     i = 0
-    while i < 20:
+    while i < 10:
         #print("process1 triggered! " + str(i))
         i+=1
         time.sleep(1)
@@ -176,8 +176,10 @@ async def main():
     robot_client = await connect()
     roverBase = Base.from_robot(robot_client, 'viam_base')
     ########################## TESTING WITH ProcessPool() ##########################
-    ### TECHNIQUE 1 
+    ### TECHNIQUE 1
+    print("scheduling task1...")
     task1 = asyncio.create_task(test_fn1())
+    print("scheduling task2...")
     task2 = asyncio.create_task(test_fn2())
     print("Result of Task1: " + str(task1.result()))
     await asyncio.wait(task1, return_when=asyncio.FIRST_COMPLETED)
