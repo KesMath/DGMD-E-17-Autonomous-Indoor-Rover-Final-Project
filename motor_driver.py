@@ -180,11 +180,14 @@ async def main():
     robot_client = await connect()
     roverBase = Base.from_robot(robot_client, 'viam_base')
     ########################## TESTING WITH ProcessPool() ##########################
-    ### TECHNIQUE 1 # FIXME - need to probably use await somewhere inside of polling infinite loop code...
-    #task1 = asyncio.create_task(test_fn1())
-    #task2 = asyncio.create_task(test_fn2())
-    await gyroscope_driver.poll_sensor_until_orthogonally_left()
-    await spin_left_90_degrees(roverBase)
+    ### TECHNIQUE 1
+    loop = asyncio.get_event_loop()
+    try:
+        loop.run_until_complete(gyroscope_driver.poll_sensor_until_orthogonally_left())
+        await spin_left_90_degrees(roverBase)
+    finally:
+        print("closing event loop...")
+        loop.close()
 
     ### TECHNIQUE 2
     # Dispatch 2 processes - Process A for Sensor Polling, Process B for motor spinning
