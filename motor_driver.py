@@ -184,7 +184,7 @@ async def main():
     #task1 = asyncio.create_task(test_fn1())
     #task2 = asyncio.create_task(test_fn2())
     task1 = asyncio.create_task(gyroscope_driver.poll_sensor_until_orthogonally_left())
-    asyncio.sleep(10)
+    await asyncio.sleep(10)
     task2 = asyncio.create_task(spin_left_90_degrees(roverBase))
     #task2.cancel()
 
