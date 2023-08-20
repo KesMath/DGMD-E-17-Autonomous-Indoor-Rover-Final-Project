@@ -9,8 +9,12 @@ from viam.components.base import Base
 from viam.robot.client import RobotClient
 from viam.rpc.dial import Credentials, DialOptions
 
-gyroscope_driver = GyroscopeDriver()
+# https://pypi.org/project/nest-asyncio/
+# By design asyncio does not allow its event loop to be nested. 
+# This module patches asyncio to allow nested use of asyncio.run and loop.run_until_complete.
 nest_asyncio.apply()
+
+gyroscope_driver = GyroscopeDriver()
 
 async def connect():
     creds = Credentials(
@@ -185,7 +189,8 @@ async def main():
     loop = asyncio.get_event_loop()
     try:
         loop.run_until_complete(gyroscope_driver.poll_sensor_until_orthogonally_left())
-        #await spin_left_90_degrees(roverBase)
+        print("SPINNING MOTORS()")
+        await spin_left_90_degrees(roverBase)
     finally:
         print("closing event loop...")
         loop.close()
