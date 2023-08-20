@@ -188,9 +188,8 @@ async def main():
     ### TECHNIQUE 1
     loop = asyncio.get_event_loop()
     try:
-        loop.run_until_complete(gyroscope_driver.poll_sensor_until_orthogonally_left())
-        print("SPINNING MOTORS()")
         await spin_left_90_degrees(roverBase)
+        loop.run_until_complete(gyroscope_driver.poll_sensor_until_orthogonally_left())
     finally:
         print("closing event loop...")
         loop.close()
