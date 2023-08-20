@@ -183,12 +183,8 @@ async def main():
     ### TECHNIQUE 1
     #task1 = asyncio.create_task(test_fn1())
     #task2 = asyncio.create_task(test_fn2())
-    await gyroscope_driver.poll_sensor_until_orthogonally_left()
-    print("sleeping...")
-    await asyncio.sleep(10)
-    print("scheduling next task...")
     await spin_left_90_degrees(roverBase)
-    #task2.cancel()
+    await gyroscope_driver.poll_sensor_until_orthogonally_left()
 
     ### TECHNIQUE 2
     # Dispatch 2 processes - Process A for Sensor Polling, Process B for motor spinning
