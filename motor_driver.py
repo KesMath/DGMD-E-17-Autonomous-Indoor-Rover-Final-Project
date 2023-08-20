@@ -1,6 +1,6 @@
 import time
 import asyncio
-from pebble import ProcessPool
+import nest_asyncio
 from path_planning.grid_maps import *
 from path_planning.dijkstra_path_planner import *
 from gyroscope.mpu6050_driver import GyroscopeDriver
@@ -10,6 +10,7 @@ from viam.robot.client import RobotClient
 from viam.rpc.dial import Credentials, DialOptions
 
 gyroscope_driver = GyroscopeDriver()
+nest_asyncio.apply()
 
 async def connect():
     creds = Credentials(
