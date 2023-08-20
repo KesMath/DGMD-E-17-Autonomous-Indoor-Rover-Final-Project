@@ -181,9 +181,11 @@ async def main():
     roverBase = Base.from_robot(robot_client, 'viam_base')
     ########################## TESTING WITH ProcessPool() ##########################
     ### TECHNIQUE 1
-    task1 = asyncio.create_task(test_fn1())
-    task2 = asyncio.create_task(test_fn2())
-    await task1
+    #task1 = asyncio.create_task(test_fn1())
+    #task2 = asyncio.create_task(test_fn2())
+    #task2.cancel()
+    task2 = await test_fn2()
+    await test_fn1()
     task2.cancel()
 
     ### TECHNIQUE 2
