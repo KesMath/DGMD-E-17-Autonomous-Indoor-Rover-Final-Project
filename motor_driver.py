@@ -180,7 +180,7 @@ async def main():
     robot_client = await connect()
     roverBase = Base.from_robot(robot_client, 'viam_base')
     ########################## TESTING WITH ProcessPool() ##########################
-    ### TECHNIQUE 1
+    ### TECHNIQUE 1 # FIXME - need to probably use await somewhere inside of polling infinite loop code...
     #task1 = asyncio.create_task(test_fn1())
     #task2 = asyncio.create_task(test_fn2())
     await spin_left_90_degrees(roverBase)
