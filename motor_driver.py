@@ -179,16 +179,14 @@ async def test_fn2():
 async def main():
     robot_client = await connect()
     roverBase = Base.from_robot(robot_client, 'viam_base')
-    await spin_left_90_degrees(roverBase)
     ########################## TESTING WITH ProcessPool() ##########################
     ### TECHNIQUE 1
     #task1 = asyncio.create_task(test_fn1())
     #task2 = asyncio.create_task(test_fn2())
-    task1 = asyncio.create_task(gyroscope_driver.poll_sensor_until_orthogonally_left())
+    await gyroscope_driver.poll_sensor_until_orthogonally_left()
     print("sleeping...")
     await asyncio.sleep(10)
     print("scheduling next task...")
-    #task2 = asyncio.create_task(spin_left_90_degrees(roverBase))
     await spin_left_90_degrees(roverBase)
     #task2.cancel()
 
