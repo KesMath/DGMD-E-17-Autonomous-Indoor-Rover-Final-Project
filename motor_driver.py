@@ -163,27 +163,27 @@ async def test_fn1():
         #print("process1 triggered! " + str(i))
         i+=1
         time.sleep(1)
-    print("i = " + str(i), flush=True)
+    print("i = " + str(i))
     return i
 
 async def test_fn2():
     # mocks motor spinning - since it goes on indefinitely
-    print("test_fn2() firing...", flush=True)
-    while True:
-        continue
+    print("test_fn2() firing...")
+    try:
+        while True:
+            continue
+    except asyncio.CancelledError:
+        print("test_fn2() cancelling...")
+        raise
 
 async def main():
     robot_client = await connect()
     roverBase = Base.from_robot(robot_client, 'viam_base')
     ########################## TESTING WITH ProcessPool() ##########################
     ### TECHNIQUE 1
-    print("scheduling task1...")
     task1 = asyncio.create_task(test_fn1())
-    print("scheduling task2...")
     task2 = asyncio.create_task(test_fn2())
-    print("Result of Task1: " + str(task1.result()))
-    print("Task1 Done:" + task1.done())
-    print("Task2 Done:" + task2.done())
+    await task1
     task2.cancel()
 
     ### TECHNIQUE 2
