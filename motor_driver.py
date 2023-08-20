@@ -186,8 +186,8 @@ async def main():
     roverBase = Base.from_robot(robot_client, 'viam_base')
     ########################## TESTING WITH ProcessPool() ##########################
     ### TECHNIQUE 1
-    await spin_left_90_degrees(roverBase)
-    await gyroscope_driver.poll_sensor_until_orthogonally_left()
+    task1 = await spin_left_90_degrees(roverBase)
+    task2 = await gyroscope_driver.poll_sensor_until_orthogonally_left()
     #loop = asyncio.get_event_loop()
     # try:
     #     loop.run_until_complete(gyroscope_driver.poll_sensor_until_orthogonally_left())
