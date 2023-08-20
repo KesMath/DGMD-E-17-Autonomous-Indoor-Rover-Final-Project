@@ -30,21 +30,23 @@ class GyroscopeDriver():
     # determine if orientation is -90deg
     async def poll_sensor_until_orthogonally_left(self):
         print("polling sensor...")
-        #while True:
         yaw = self.read_yaw()
         if (yaw < THRESHOLDING_VALUE[0]): 
             print("Orthogonally-Left turn in proximity of " + str(THRESHOLDING_VALUE[0]) + ": "  + str(yaw) + "\n", flush=True)
-            return
+            return True
         else:
             print("YAW:" + str(yaw))
+            return False
 
     # determine if orientation is +90deg
     def poll_sensor_until_orthogonally_right(self):
-        while True:
-            yaw = self.read_yaw()
-            if (yaw > THRESHOLDING_VALUE[1]): 
-                print("Orthogonally-Right in proximity of " + str(THRESHOLDING_VALUE[1]) + ": "  + str(yaw) + "\n")
-                return
+        yaw = self.read_yaw()
+        if (yaw > THRESHOLDING_VALUE[1]): 
+            print("Orthogonally-Right in proximity of " + str(THRESHOLDING_VALUE[1]) + ": "  + str(yaw) + "\n")
+            return True
+        else:
+            print("YAW:" + str(yaw))
+            return False
 
 def main():
     g_driver = GyroscopeDriver()
