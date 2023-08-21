@@ -1,6 +1,6 @@
 import time
 import asyncio
-import nest_asyncio
+import subprocess
 from path_planning.grid_maps import *
 from path_planning.dijkstra_path_planner import *
 from gyroscope.mpu6050_driver import GyroscopeDriver
@@ -174,21 +174,32 @@ async def test_fn1():
 async def test_fn2():
     # mocks motor spinning - since it goes on indefinitely
     print("test_fn2() firing...")
-    try:
-        while True:
-            continue
-    except asyncio.CancelledError:
-        print("test_fn2() cancelling...")
-        raise
+    while True:
+        continue
 
 async def main():
     robot_client = await connect()
     roverBase = Base.from_robot(robot_client, 'viam_base')
     ########################## TESTING WITH ProcessPool() ##########################
+
+    ## TECHNIQUE 0
+    # call subprocess on polling sensor and monitor it's return code = rc
+    # result = subprocess.run(args = ["python", "gyroscope/mpu6050_driver.py"], 
+    #                         capture_output=True,
+    #                         text=True,
+    #                         shell=False,
+    #                         timeout=False)
+    # then in this main thread:
+    # await spin_left_90_degrees()
+    #   while True:
+            #if rc = 0:
+                # stop_moving()
+            
+
+
     ### TECHNIQUE 1
-    task = await gyroscope_driver.poll_sensor_until_orthogonally_left()
+    task = await gyroscope_driver.poll_sensor_until_orthogonally_left(roverBase=roverBase)
     await spin_left_90_degrees(roverBase)
-    task.result()
 
     ### TECHNIQUE 2
     # Dispatch 2 processes - Process A for Sensor Polling, Process B for motor spinning
