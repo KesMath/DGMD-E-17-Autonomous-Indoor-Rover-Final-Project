@@ -29,6 +29,7 @@ class GyroscopeDriver():
     # determine if orientation is -90deg
     async def poll_sensor_until_orthogonally_left(self, roverBase):
         print("polling sensor...")
+        await roverBase.spin(velocity=100, angle=90)
         while True:
             yaw = self.read_yaw()
             if (yaw < THRESHOLDING_VALUE[0]): 

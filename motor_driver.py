@@ -181,7 +181,7 @@ async def main():
     robot_client = await connect()
     roverBase = Base.from_robot(robot_client, 'viam_base')
     ########################## TESTING WITH ProcessPool() ##########################
-
+    await gyroscope_driver.poll_sensor_until_orthogonally_left()
     ## TECHNIQUE 0
     # call subprocess on polling sensor and monitor it's return code = rc
     # result = subprocess.run(args = ["python", "gyroscope/mpu6050_driver.py"], 
@@ -191,19 +191,6 @@ async def main():
     #                         timeout=False)
     # # then in this main thread:
     # await spin_left_90_degrees()
-            
-    await spin_left_90_degrees(roverBase)
-    with ProcessPool() as pool:
-        print("executing processes...")
-        #p1 = pool.schedule(test_fn1)
-        #p2 = pool.schedule(test_fn2)
-        p1 = pool.schedule(gyroscope_driver.poll_sensor_until_orthogonally_left, roverBase)
-
-        p1.result() # blocks until process completes!
-        assert p1.done()
-
-        pool.stop()
-        pool.join()
 
     ### TECHNIQUE 1
     #await spin_left_90_degrees(roverBase)
