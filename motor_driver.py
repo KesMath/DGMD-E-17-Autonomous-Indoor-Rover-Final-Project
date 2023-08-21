@@ -181,16 +181,21 @@ async def main():
     robot_client = await connect()
     roverBase = Base.from_robot(robot_client, 'viam_base')
     ########################## TESTING WITH ProcessPool() ##########################
-    await gyroscope_driver.poll_sensor_until_orthogonally_left(roverBase)
+
     ## TECHNIQUE 0
     # call subprocess on polling sensor and monitor it's return code = rc
-    # result = subprocess.run(args = ["python", "gyroscope/mpu6050_driver.py"], 
-    #                         capture_output=True,
-    #                         text=True,
-    #                         shell=False,
-    #                         timeout=False)
-    # # then in this main thread:
-    # await spin_left_90_degrees()
+    run_gyro_sensor = subprocess.Popen(args = ["python", "gyroscope/mpu6050_driver.py"],
+                            stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE,
+                            text=True,
+                            shell=False)
+    await spin_left_90_degrees()
+    
+    # wait until process completes
+    while run_gyro_sensor.poll() is None:
+        print("waiting for process to complete...")
+        continue
+    print("process terminated...")
 
     ### TECHNIQUE 1
     #await spin_left_90_degrees(roverBase)
