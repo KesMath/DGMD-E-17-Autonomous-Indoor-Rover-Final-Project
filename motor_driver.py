@@ -184,7 +184,7 @@ async def main():
 
     ## TECHNIQUE 0
     # call subprocess on polling sensor and monitor it's return code = rc
-    run_gyro_sensor = subprocess.Popen(args = ["python", "mpu6050_driver.py"],
+    run_gyro_sensor = subprocess.Popen(args = ["python", "gyroscope/mpu6050_driver.py"],
                             stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE,
                             text=True,
