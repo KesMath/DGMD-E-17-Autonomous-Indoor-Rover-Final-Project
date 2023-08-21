@@ -189,13 +189,21 @@ async def main():
     #                         text=True,
     #                         shell=False,
     #                         timeout=False)
-    # then in this main thread:
+    # # then in this main thread:
     # await spin_left_90_degrees()
-    #   while True:
-            #if rc = 0:
-                # stop_moving()
             
+    await spin_left_90_degrees()
+    with ProcessPool() as pool:
+        print("executing processes...")
+        #p1 = pool.schedule(test_fn1)
+        #p2 = pool.schedule(test_fn2)
+        p1 = pool.schedule(gyroscope_driver.poll_sensor_until_orthogonally_left, roverBase)
 
+        p1.result() # blocks until process completes!
+        assert p1.done()
+
+        pool.stop()
+        pool.join()
 
     ### TECHNIQUE 1
     #await spin_left_90_degrees(roverBase)
@@ -203,20 +211,20 @@ async def main():
 
     ### TECHNIQUE 2
     # Dispatch 2 processes - Process A for Sensor Polling, Process B for motor spinning
-    with ProcessPool() as pool:
-        print("executing processes...")
-        #p1 = pool.schedule(test_fn1)
-        #p2 = pool.schedule(test_fn2)
-        p1 = pool.schedule(gyroscope_driver.poll_sensor_until_orthogonally_left)
-        p2 = pool.schedule(spin_left_90_degrees, roverBase)
+    # with ProcessPool() as pool:
+    #     print("executing processes...")
+    #     #p1 = pool.schedule(test_fn1)
+    #     #p2 = pool.schedule(test_fn2)
+    #     p1 = pool.schedule(gyroscope_driver.poll_sensor_until_orthogonally_left)
+    #     p2 = pool.schedule(spin_left_90_degrees, roverBase)
 
-        p1.result() # blocks until process completes!
-        p2.cancel()
-        assert p1.done()
-        assert p2.done()
+    #     p1.result() # blocks until process completes!
+    #     p2.cancel()
+    #     assert p1.done()
+    #     assert p2.done()
 
-        pool.stop()
-        pool.join()
+    #     pool.stop()
+    #     pool.join()
 
         ### TECHNIQUE 3
         # when process A finishes (i.e. when rover turns 90deg,) terminate process B (i.e. stop motors from spinning)
