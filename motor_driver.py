@@ -192,9 +192,11 @@ async def main():
     await spin_left_90_degrees(roverBase)
     
     # wait until process completes
-    while run_gyro_sensor.poll() is None:
-        print("waiting for process to complete...")
-        continue
+    std_out, = run_gyro_sensor.communicate()
+    print(std_out)
+    # while run_gyro_sensor.poll() is None:
+    #     print("waiting for process to complete...")
+    #     continue
     print("process terminated...")
 
     ### TECHNIQUE 1
