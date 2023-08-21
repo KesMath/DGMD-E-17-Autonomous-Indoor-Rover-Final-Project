@@ -1,6 +1,7 @@
 import time
 import asyncio
 import subprocess
+from pebble import ProcessPool
 from path_planning.grid_maps import *
 from path_planning.dijkstra_path_planner import *
 from gyroscope.mpu6050_driver import GyroscopeDriver
@@ -38,7 +39,7 @@ async def move_backward_1_foot(base):
 async def spin_left_90_degrees(base):
     # Spins the Viam Rover 90 degrees at 100 degrees per second
     print("spinning left 90 degrees")
-    await base.spin(velocity=100, angle=100)
+    await base.spin(velocity=100, angle=90)
     
 async def spin_right_90_degrees(base):
     # Spins the Viam Rover 90 degrees at 100 degrees per second
@@ -197,25 +198,25 @@ async def main():
 
 
     ### TECHNIQUE 1
-    await spin_left_90_degrees(roverBase)
-    await gyroscope_driver.poll_sensor_until_orthogonally_left(roverBase=roverBase)
+    #await spin_left_90_degrees(roverBase)
+    #await gyroscope_driver.poll_sensor_until_orthogonally_left(roverBase=roverBase)
 
     ### TECHNIQUE 2
     # Dispatch 2 processes - Process A for Sensor Polling, Process B for motor spinning
-    # with ProcessPool() as pool:
-    #     print("executing processes...")
-    #     #p1 = pool.schedule(test_fn1)
-    #     #p2 = pool.schedule(test_fn2)
-    #     p1 = pool.schedule(gyroscope_driver.poll_sensor_until_orthogonally_left)
-    #     p2 = pool.schedule(spin_left_90_degrees, roverBase)
+    with ProcessPool() as pool:
+        print("executing processes...")
+        #p1 = pool.schedule(test_fn1)
+        #p2 = pool.schedule(test_fn2)
+        p1 = pool.schedule(gyroscope_driver.poll_sensor_until_orthogonally_left)
+        p2 = pool.schedule(spin_left_90_degrees, roverBase)
 
-    #     p1.result() # blocks until process completes!
-    #     p2.cancel()
-    #     assert p1.done()
-    #     assert p2.done()
+        p1.result() # blocks until process completes!
+        p2.cancel()
+        assert p1.done()
+        assert p2.done()
 
-    #     pool.stop()
-    #     pool.join()
+        pool.stop()
+        pool.join()
 
         ### TECHNIQUE 3
         # when process A finishes (i.e. when rover turns 90deg,) terminate process B (i.e. stop motors from spinning)
