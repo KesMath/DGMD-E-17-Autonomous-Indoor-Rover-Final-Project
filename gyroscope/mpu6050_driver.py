@@ -27,7 +27,7 @@ class GyroscopeDriver():
         return np.rad2deg(self.__poll_sensor(2))
 
     # determine if orientation is -90deg
-    async def poll_sensor_until_orthogonally_left(self):
+    def poll_sensor_until_orthogonally_left(self):
         print("polling sensor...")
         while True:
             yaw = self.read_yaw()
