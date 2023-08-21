@@ -12,7 +12,6 @@ from viam.rpc.dial import Credentials, DialOptions
 # https://pypi.org/project/nest-asyncio/
 # By design asyncio does not allow its event loop to be nested. 
 # This module patches asyncio to allow nested use of asyncio.run and loop.run_until_complete.
-nest_asyncio.apply()
 
 gyroscope_driver = GyroscopeDriver()
 
