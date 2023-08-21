@@ -189,7 +189,7 @@ async def main():
                             stderr=subprocess.PIPE,
                             text=True,
                             shell=False)
-    await spin_left_90_degrees()
+    await spin_left_90_degrees(roverBase)
     
     # wait until process completes
     while run_gyro_sensor.poll() is None:
