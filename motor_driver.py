@@ -194,6 +194,8 @@ async def main():
     # wait until process completes
     std_out, _ = run_gyro_sensor.communicate()
     print("STD_OUT: " + std_out)
+    
+    print("RETURN CODE: " + str(run_gyro_sensor.returncode))
     while run_gyro_sensor.poll() is None:
         print("waiting for process to complete...")
         continue
