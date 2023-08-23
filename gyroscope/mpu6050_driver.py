@@ -1,4 +1,3 @@
-import asyncio
 import board
 import numpy as np
 import adafruit_mpu6050
@@ -52,9 +51,9 @@ class GyroscopeDriver():
                 print("YAW:" + str(yaw))
 
 
-async def main():
+def main():
     g_driver = GyroscopeDriver()
     g_driver.poll_sensor_until_orthogonally_left()
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    main()
