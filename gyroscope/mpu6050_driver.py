@@ -34,7 +34,7 @@ class GyroscopeDriver():
             if (yaw < THRESHOLDING_VALUE[0]): 
                 print("Clockwise 90: " + str(THRESHOLDING_VALUE[0]) + ": "  + str(yaw) + "\n")
                 print("stopping rover...")
-                await roverBase.spin(velocity=0, angle=0)
+                await roverBase.stop()
                 print("rover stopped!")
                 return True
             else:
@@ -47,7 +47,7 @@ class GyroscopeDriver():
             if (yaw > THRESHOLDING_VALUE[1]): 
                 print("Counter-Clockwise 90: " + str(THRESHOLDING_VALUE[1]) + ": "  + str(yaw) + "\n")
                 print("stopping rover...")
-                await roverBase.spin(velocity=0, angle=0)
+                await roverBase.stop()
                 print("rover stopped!")
                 return True
             else:

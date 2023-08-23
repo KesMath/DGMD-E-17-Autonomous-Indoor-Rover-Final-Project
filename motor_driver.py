@@ -183,6 +183,9 @@ async def main():
     robot_client = await connect()
     roverBase = Base.from_robot(robot_client, 'viam_base')
     gyro_sensor = GyroscopeDriver()
+
+    await spin_left_90_degrees(roverBase)
+    await roverBase.stop()
     ########################## TESTING WITH ProcessPool() ##########################
     # TECHNIQUE 0
     # call subprocess on polling sensor and monitor it's return code = rc
