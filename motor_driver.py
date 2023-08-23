@@ -215,7 +215,7 @@ async def main():
     await spin_left_90_degrees(roverBase) # blocks until completed or cancelled.
     if process.is_alive() is False:
         print("stopping rover")
-        roverBase.stop()
+        await roverBase.stop()
 
 
     print("closing connection...")
