@@ -36,7 +36,6 @@ class GyroscopeDriver():
                 return True
             else:
                 print("YAW:" + str(yaw))
-                return False
 
     # determine if orientation is +90deg
     def poll_sensor_until_orthogonally_right(self):
@@ -47,7 +46,7 @@ class GyroscopeDriver():
                 return True
             else:
                 print("YAW:" + str(yaw))
-                return False
+
 
 def main():
     g_driver = GyroscopeDriver()
