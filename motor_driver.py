@@ -162,22 +162,6 @@ async def walk_enclosure(base):
 #     print("closing client connection to Viam server...")
 #     await robot_client.close()
 
-###### Sanity Check ProcessPool ##########
-async def test_fn1():
-    # mocks gyroscope polling - since it stops eventually
-    i = 0
-    while i < 10:
-        #print("process1 triggered! " + str(i))
-        i+=1
-        time.sleep(1)
-    print("i = " + str(i))
-    return i
-
-async def test_fn2():
-    # mocks motor spinning - since it goes on indefinitely
-    print("test_fn2() firing...")
-    while True:
-        continue
 
 async def main():
     robot_client = await connect()
