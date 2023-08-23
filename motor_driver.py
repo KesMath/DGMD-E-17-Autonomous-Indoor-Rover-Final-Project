@@ -203,20 +203,11 @@ async def main():
     # print("process terminated...")
 
     # TECHNIQUE 1
-    # process = Process(target=gyro_sensor.poll_for_90_clockwise, args=(roverBase,))
-    # process.start()
-    # await spin_left_90_degrees(roverBase) # blocks until completed or cancelled.
-    # assert process.is_alive() is False
-    # assert process.exitcode == 0
-
-    # TECHNIQUE 2
-    process = Process(target=gyro_sensor.poll_sensor_until_90_clockwise2)
+    process = Process(target=gyro_sensor.poll_for_90_clockwise, args=(roverBase,))
     process.start()
     await spin_left_90_degrees(roverBase) # blocks until completed or cancelled.
-    if process.is_alive() is False:
-        print("stopping rover")
-        await roverBase.stop()
-
+    assert process.is_alive() is False
+    assert process.exitcode == 0
 
     print("closing connection...")
     await robot_client.close()
