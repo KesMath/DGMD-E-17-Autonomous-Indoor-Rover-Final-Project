@@ -195,11 +195,11 @@ async def main():
     #                         text=True,
     #                         shell=False)
 
-    process = Process(target=gyro_sensor.poll_for_90_clockwise, args=(roverBase,))
-    process.start()
-    await spin_left_90_degrees(roverBase) # blocks until completed or cancelled.
-    assert process.is_alive() is False
-    assert process.exitcode == 0
+    # process = Process(target=gyro_sensor.poll_for_90_clockwise, args=(roverBase,))
+    # process.start()
+    # await spin_left_90_degrees(roverBase) # blocks until completed or cancelled.
+    # assert process.is_alive() is False
+    # assert process.exitcode == 0
 
     # std_out, _ = run_gyro_process.communicate() # wait until process completes
     # print("STD_OUT: " + std_out)
