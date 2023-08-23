@@ -41,7 +41,7 @@ class GyroscopeDriver():
                 print("YAW:" + str(yaw))
     
     # determine if sensor's orientation is -90deg
-    def poll_sensor_until_90_clockwise2(self, roverBase):
+    def poll_sensor_until_90_clockwise2(self):
         print("polling sensor...")
         while True:
             yaw = self.read_yaw()

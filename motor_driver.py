@@ -210,7 +210,7 @@ async def main():
     # assert process.exitcode == 0
 
     # TECHNIQUE 2
-    process = Process(target=gyro_sensor.poll_for_90_clockwise2)
+    process = Process(target=gyro_sensor.poll_sensor_until_90_clockwise2)
     process.start()
     await spin_left_90_degrees(roverBase) # blocks until completed or cancelled.
     if process.is_alive() is False:
