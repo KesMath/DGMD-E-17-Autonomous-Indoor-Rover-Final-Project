@@ -39,7 +39,7 @@ async def move_backward_1_foot(base):
 async def spin_left_90_degrees(base):
     # Spins the Viam Rover 90 degrees at 100 degrees per second
     print("spinning left 90 degrees")
-    await base.spin(velocity=100, angle=90)
+    await base.spin(velocity=100, angle=120)
     
 async def spin_right_90_degrees(base):
     # Spins the Viam Rover 90 degrees at 100 degrees per second
@@ -191,8 +191,8 @@ async def main():
                             shell=False)
     await spin_left_90_degrees(roverBase)
     
-    # wait until process completes
-    std_out, _ = run_gyro_sensor.communicate()
+
+    std_out, _ = run_gyro_sensor.communicate() # wait until process completes
     print("STD_OUT: " + std_out)
     
     print("RETURN CODE: " + str(run_gyro_sensor.returncode))
