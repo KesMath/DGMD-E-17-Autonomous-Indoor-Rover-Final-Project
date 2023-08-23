@@ -39,7 +39,7 @@ async def move_backward_1_foot(base):
 async def spin_left_90_degrees(base):
     # Spins the Viam Rover 90 degrees at 100 degrees per second
     print("spinning left 90 degrees")
-    await base.spin(velocity=100, angle=120)
+    await base.spin(velocity=100, angle=95)
     
 async def spin_right_90_degrees(base):
     # Spins the Viam Rover 90 degrees at 100 degrees per second
@@ -182,7 +182,6 @@ async def main():
     roverBase = Base.from_robot(robot_client, 'viam_base')
     ########################## TESTING WITH ProcessPool() ##########################
 
-    ## TECHNIQUE 0
     # call subprocess on polling sensor and monitor it's return code = rc
     run_gyro_sensor = subprocess.Popen(args = ["python", "gyroscope/mpu6050_driver.py"],
                             stdout=subprocess.PIPE,
