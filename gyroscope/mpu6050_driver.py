@@ -1,4 +1,4 @@
-import time
+import asyncio
 import board
 import numpy as np
 import adafruit_mpu6050
@@ -27,30 +27,34 @@ class GyroscopeDriver():
         return np.rad2deg(self.__poll_sensor(2))
 
     # determine if orientation is -90deg
-    def poll_sensor_until_orthogonally_left(self):
+    async def poll_sensor_until_orthogonally_left(self, roverBase):
         print("polling sensor...")
         while True:
             yaw = self.read_yaw()
             if (yaw < THRESHOLDING_VALUE[0]): 
                 print("Orthogonally-Left turn in proximity of " + str(THRESHOLDING_VALUE[0]) + ": "  + str(yaw) + "\n")
+                await roverBase.stop()
+                print("rover stopped!")
                 return True
             else:
                 print("YAW:" + str(yaw))
 
     # determine if orientation is +90deg
-    def poll_sensor_until_orthogonally_right(self):
+    async def poll_sensor_until_orthogonally_right(self, roverBase):
         while True:
             yaw = self.read_yaw()
             if (yaw > THRESHOLDING_VALUE[1]): 
                 print("Orthogonally-Right in proximity of " + str(THRESHOLDING_VALUE[1]) + ": "  + str(yaw) + "\n")
+                await roverBase.stop()
+                print("rover stopped!")
                 return True
             else:
                 print("YAW:" + str(yaw))
 
 
-def main():
+async def main():
     g_driver = GyroscopeDriver()
     g_driver.poll_sensor_until_orthogonally_left()
 
 if __name__ == '__main__':
-    main()
+    asyncio.run(main())

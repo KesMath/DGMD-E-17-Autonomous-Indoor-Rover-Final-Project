@@ -1,7 +1,7 @@
 import time
 import asyncio
 import subprocess
-from pebble import ProcessPool
+from multiprocessing import Process
 from path_planning.grid_maps import *
 from path_planning.dijkstra_path_planner import *
 from gyroscope.mpu6050_driver import GyroscopeDriver
@@ -39,7 +39,7 @@ async def move_backward_1_foot(base):
 async def spin_left_90_degrees(base):
     # Spins the Viam Rover 90 degrees at 100 degrees per second
     print("spinning left 90 degrees")
-    await base.spin(velocity=100, angle=120)
+    await base.spin(velocity=200, angle=120)
     
 async def spin_right_90_degrees(base):
     # Spins the Viam Rover 90 degrees at 100 degrees per second
@@ -183,22 +183,26 @@ async def main():
     ########################## TESTING WITH ProcessPool() ##########################
 
     # call subprocess on polling sensor and monitor it's return code = rc
-    run_gyro_sensor = subprocess.Popen(args = ["python", "gyroscope/mpu6050_driver.py"],
-                            stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE,
-                            text=True,
-                            shell=False)
-    await spin_left_90_degrees(roverBase)
-    
+    # run_gyro_sensor = subprocess.Popen(args = ["python", "gyroscope/mpu6050_driver.py"],
+    #                         stdout=subprocess.PIPE,
+    #                         stderr=subprocess.PIPE,
+    #                         text=True,
+    #                         shell=False)
 
-    std_out, _ = run_gyro_sensor.communicate() # wait until process completes
-    print("STD_OUT: " + std_out)
+
+    await spin_left_90_degrees(roverBase) # blocks until completed or cancelled.
+    p = Process(target=gyroscope_driver.poll_sensor_until_orthogonally_left, args=(roverBase,))
+    p.start()
+    p.join()
+
+    # std_out, _ = run_gyro_sensor.communicate() # wait until process completes
+    # print("STD_OUT: " + std_out)
     
-    print("RETURN CODE: " + str(run_gyro_sensor.returncode))
-    while run_gyro_sensor.poll() is None:
-        print("waiting for process to complete...")
-        continue
-    print("process terminated...")
+    # print("RETURN CODE: " + str(run_gyro_sensor.returncode))
+    # while run_gyro_sensor.poll() is None:
+    #     print("waiting for process to complete...")
+    #     continue
+    # print("process terminated...")
 
     print("closing connection...")
     await robot_client.close()
