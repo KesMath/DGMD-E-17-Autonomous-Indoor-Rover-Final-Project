@@ -1,4 +1,5 @@
 import board
+import asyncio
 import numpy as np
 import adafruit_mpu6050
 
@@ -25,32 +26,39 @@ class GyroscopeDriver():
     def read_yaw(self):
         return np.rad2deg(self.__poll_sensor(2))
 
-    # determine if orientation is -90deg
-    async def poll_sensor_until_orthogonally_left(self, roverBase):
+    # determine if sensor's orientation is -90deg
+    async def poll_sensor_until_90_clockwise(self, roverBase):
         print("polling sensor...")
         while True:
             yaw = self.read_yaw()
             if (yaw < THRESHOLDING_VALUE[0]): 
-                print("Orthogonally-Left turn in proximity of " + str(THRESHOLDING_VALUE[0]) + ": "  + str(yaw) + "\n")
+                print("Clockwise 90: " + str(THRESHOLDING_VALUE[0]) + ": "  + str(yaw) + "\n")
                 await roverBase.stop()
                 print("rover stopped!")
                 return True
             else:
                 print("YAW:" + str(yaw))
 
-    # determine if orientation is +90deg
-    async def poll_sensor_until_orthogonally_right(self, roverBase):
+    # determine if sensor's orientation is +90deg
+    async def poll_sensor_until_90_counter_clockwise(self, roverBase):
         while True:
             yaw = self.read_yaw()
             if (yaw > THRESHOLDING_VALUE[1]): 
-                print("Orthogonally-Right in proximity of " + str(THRESHOLDING_VALUE[1]) + ": "  + str(yaw) + "\n")
+                print("Counter-Clockwise 90: " + str(THRESHOLDING_VALUE[1]) + ": "  + str(yaw) + "\n")
                 await roverBase.stop()
                 print("rover stopped!")
                 return True
             else:
                 print("YAW:" + str(yaw))
+    
+    # trick to call async function using multiporcessing
+    # https://stackoverflow.com/questions/71678575/how-do-i-call-an-async-function-in-a-new-process-using-multiprocessing
+    def poll_for_90_clockwise(self, roverBase):
+        asyncio.run(self.poll_sensor_until_90_clockwise(roverBase))
 
-
+    def poll_for_90_counter_clockwise(self, roverBase):
+        asyncio.run(self.poll_sensor_until_90_counter_clockwise(roverBase))
+        
 def main():
     g_driver = GyroscopeDriver()
     g_driver.poll_sensor_until_orthogonally_left()

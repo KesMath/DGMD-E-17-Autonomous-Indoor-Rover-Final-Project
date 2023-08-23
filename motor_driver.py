@@ -14,7 +14,6 @@ from viam.rpc.dial import Credentials, DialOptions
 # By design asyncio does not allow its event loop to be nested. 
 # This module patches asyncio to allow nested use of asyncio.run and loop.run_until_complete.
 
-gyroscope_driver = GyroscopeDriver()
 
 async def connect():
     creds = Credentials(
@@ -39,7 +38,7 @@ async def move_backward_1_foot(base):
 async def spin_left_90_degrees(base):
     # Spins the Viam Rover 90 degrees at 100 degrees per second
     print("spinning left 90 degrees")
-    await base.spin(velocity=200, angle=120)
+    await base.spin(velocity=100, angle=120)
     
 async def spin_right_90_degrees(base):
     # Spins the Viam Rover 90 degrees at 100 degrees per second
@@ -180,26 +179,27 @@ async def test_fn2():
 async def main():
     robot_client = await connect()
     roverBase = Base.from_robot(robot_client, 'viam_base')
+    gyro_sensor = GyroscopeDriver()
     ########################## TESTING WITH ProcessPool() ##########################
-
+    # TECHNIQUE 0
     # call subprocess on polling sensor and monitor it's return code = rc
-    # run_gyro_sensor = subprocess.Popen(args = ["python", "gyroscope/mpu6050_driver.py"],
+    # run_gyro_process = subprocess.Popen(args = ["python", "gyroscope/mpu6050_driver.py"],
     #                         stdout=subprocess.PIPE,
     #                         stderr=subprocess.PIPE,
     #                         text=True,
     #                         shell=False)
 
-
+    process = Process(target=gyro_sensor.poll_for_90_clockwise, args=(roverBase,))
+    process.start()
     await spin_left_90_degrees(roverBase) # blocks until completed or cancelled.
-    p = Process(target=gyroscope_driver.poll_sensor_until_orthogonally_left, args=(roverBase,))
-    p.start()
-    p.join()
+    assert process.is_alive() is False
+    assert process.exitcode == 0
 
-    # std_out, _ = run_gyro_sensor.communicate() # wait until process completes
+    # std_out, _ = run_gyro_process.communicate() # wait until process completes
     # print("STD_OUT: " + std_out)
     
-    # print("RETURN CODE: " + str(run_gyro_sensor.returncode))
-    # while run_gyro_sensor.poll() is None:
+    # print("RETURN CODE: " + str(run_gyro_process.returncode))
+    # while run_gyro_process.poll() is None:
     #     print("waiting for process to complete...")
     #     continue
     # print("process terminated...")
