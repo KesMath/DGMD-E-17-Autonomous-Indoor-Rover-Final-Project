@@ -46,8 +46,11 @@ async def spin_left_90_degrees(base):
     
 async def spin_right_90_degrees(base):
     # Spins the Viam Rover 90 degrees at 100 degrees per second
-    print("spinning right 90 degrees")
-    await base.spin(velocity=100, angle=-90)
+    try:
+        print("spinning right 90 degrees")
+        await base.spin(velocity=100, angle=-90)
+    except (asyncio.CancelledError, grpclib.exceptions.StreamTerminatedError) as e:
+        print("stopping rover from spinning!")
 
 async def drive_right_1_foot(base):
     await spin_right_90_degrees(base)
@@ -190,9 +193,9 @@ async def main():
     # TECHNIQUE 1
     process = Process(target=gyro_sensor.poll_for_90_clockwise, args=(roverBase,))
     process.start()
-    a = asyncio.create_task(spin_left_90_degrees(roverBase))
-    await a
-    #await spin_left_90_degrees(roverBase) # blocks until completed or cancelled.
+    #a = asyncio.create_task(spin_left_90_degrees(roverBase))
+    #await a
+    await spin_left_90_degrees(roverBase) # blocks until completed or cancelled.
     assert process.is_alive() is False
     assert process.exitcode == 0
 
