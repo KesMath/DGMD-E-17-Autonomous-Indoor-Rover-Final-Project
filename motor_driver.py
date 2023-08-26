@@ -200,7 +200,8 @@ async def main():
     await spin_left_90_degrees(roverBase) # blocks until completed or cancelled.
     print("terminating sensor polling process...")
     process.terminate()
-    assert not process.is_alive()
+    print("" + str(process.is_alive()))
+    assert process.is_alive() is False
     assert process.exitcode == -signal.SIGTERM
 
     print("closing connection...")
