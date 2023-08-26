@@ -42,7 +42,9 @@ async def spin_left_90_degrees(base):
         print("spinning left 90 degrees")
         await base.spin(velocity=100, angle=120)
     except (asyncio.CancelledError, grpclib.exceptions.StreamTerminatedError) as e:
-        print("stopping rover from spinning!")
+        print("rover stopped from spinning!")
+    finally:
+        return
     
 async def spin_right_90_degrees(base):
     # Spins the Viam Rover 90 degrees at 100 degrees per second
@@ -50,7 +52,7 @@ async def spin_right_90_degrees(base):
         print("spinning right 90 degrees")
         await base.spin(velocity=100, angle=-90)
     except (asyncio.CancelledError, grpclib.exceptions.StreamTerminatedError) as e:
-        print("stopping rover from spinning!")
+        print("rover stopped from spinning!")
 
 async def drive_right_1_foot(base):
     await spin_right_90_degrees(base)
