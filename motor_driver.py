@@ -1,5 +1,6 @@
 import time
 import asyncio
+import signal
 import grpclib
 import subprocess
 from multiprocessing import Process
@@ -197,10 +198,10 @@ async def main():
     process = Process(target=gyro_sensor.poll_for_90_clockwise, args=(roverBase,))
     process.start()
     await spin_left_90_degrees(roverBase) # blocks until completed or cancelled.
-    print("waiting until child process finishes...")
-    process.join()
-    assert process.is_alive() is False
-    assert process.exitcode == 0
+    print("terminating sensor polling process...")
+    process.terminate()
+    assert not process.is_alive()
+    assert process.exitcode == -signal.SIGTERM
 
     print("closing connection...")
     await robot_client.close()
