@@ -202,6 +202,7 @@ async def main():
     process.terminate()
     await asyncio.sleep(1)
     print("" + str(process.is_alive()))
+    print("" + str(process.exitcode))
     assert process.is_alive() is False
     assert process.exitcode == -signal.SIGTERM
 
