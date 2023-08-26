@@ -2,7 +2,6 @@ import time
 import asyncio
 import signal
 import grpclib
-import subprocess
 from multiprocessing import Process
 from path_planning.grid_maps import *
 from path_planning.dijkstra_path_planner import *
