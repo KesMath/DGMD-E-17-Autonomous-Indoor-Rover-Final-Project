@@ -44,6 +44,7 @@ async def spin_left_90_degrees(base):
     except (asyncio.CancelledError, grpclib.exceptions.StreamTerminatedError) as e:
         print("rover stopped from spinning!")
     finally:
+        print("inside finally...")
         return
     
 async def spin_right_90_degrees(base):
