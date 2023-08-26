@@ -1,5 +1,6 @@
 import time
 import asyncio
+import grpclib
 import subprocess
 from multiprocessing import Process
 from path_planning.grid_maps import *
@@ -40,7 +41,7 @@ async def spin_left_90_degrees(base):
     try:
         print("spinning left 90 degrees")
         await base.spin(velocity=100, angle=120)
-    except asyncio.CancelledError:
+    except (asyncio.CancelledError, grpclib.exceptions.StreamTerminatedError) as e:
         print("stopping rover from spinning!")
     
 async def spin_right_90_degrees(base):
