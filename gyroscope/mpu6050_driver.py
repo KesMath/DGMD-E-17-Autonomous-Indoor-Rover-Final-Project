@@ -48,7 +48,15 @@ class GyroscopeDriver():
                 return await roverBase.stop()
             else:
                 print("YAW:" + str(yaw))
+    
+    # trick to call async function using multiporcessing
+    # https://stackoverflow.com/questions/71678575/how-do-i-call-an-async-function-in-a-new-process-using-multiprocessing
+    def poll_for_90_clockwise(self, roverBase):
+        asyncio.run(self.poll_sensor_until_90_clockwise(roverBase))
 
+    def poll_for_90_counter_clockwise(self, roverBase):
+        asyncio.run(self.poll_sensor_until_90_counter_clockwise(roverBase))
+        
 def main():
     g_driver = GyroscopeDriver()
     g_driver.poll_sensor_until_orthogonally_left()
