@@ -176,33 +176,13 @@ async def main():
     roverBase = Base.from_robot(robot_client, 'viam_base')
     gyro_sensor = GyroscopeDriver()
 
-    ########################## TESTING WITH ProcessPool() ##########################
-    # TECHNIQUE 0
-    # call subprocess on polling sensor and monitor it's return code = rc
-    # run_gyro_process = subprocess.Popen(args = ["python", "gyroscope/mpu6050_driver.py"],
-    #                         stdout=subprocess.PIPE,
-    #                         stderr=subprocess.PIPE,
-    #                         text=True,
-    #                         shell=False)
-
-    # std_out, _ = run_gyro_process.communicate() # wait until process completes
-    # print("STD_OUT: " + std_out)
-    
-    # print("RETURN CODE: " + str(run_gyro_process.returncode))
-    # while run_gyro_process.poll() is None:
-    #     print("waiting for process to complete...")
-    #     continue
-    # print("process terminated...")
-
     # TECHNIQUE 1
     process = Process(target=gyro_sensor.poll_for_90_clockwise, args=(roverBase,))
     process.start()
     await spin_left_90_degrees(roverBase) # blocks until completed or cancelled.
     print("terminating sensor polling process...")
     process.terminate()
-    await asyncio.sleep(1)
-    print("" + str(process.is_alive()))
-    print("" + str(process.exitcode))
+    await asyncio.sleep(1) # blocking main process temporarily so assertions can pass!
     assert process.is_alive() is False
     assert process.exitcode == -signal.SIGTERM
 
