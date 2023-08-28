@@ -50,7 +50,7 @@ async def spin_right_90_degrees(base):
     # Spins the Viam Rover 90 degrees at 100 degrees per second
     try:
         print("spinning right 90 degrees")
-        await base.spin(velocity=90, angle=-180)
+        await base.spin(velocity=90, angle=-450)
     except (asyncio.CancelledError, grpclib.exceptions.StreamTerminatedError) as e:
         print("rover stopped from spinning!")
     finally:
@@ -177,16 +177,15 @@ async def main():
     gyro_sensor = GyroscopeDriver()
 
     # TECHNIQUE 1
-    
-    #process = Process(target=gyro_sensor.poll_for_90_clockwise, args=(roverBase,))
-    #process.start()
+    process = Process(target=gyro_sensor.poll_for_90_clockwise, args=(roverBase,))
+    process.start()
     await spin_right_90_degrees(roverBase) # blocks until completed or cancelled.
     await roverBase.stop()
-    #print("terminating sensor polling process...")
-    #process.terminate()
-    #await asyncio.sleep(3) # blocking main process temporarily so assertions can pass!
-    #assert process.is_alive() is False
-    #assert process.exitcode == -signal.SIGTERM
+    print("terminating sensor polling process...")
+    process.terminate()
+    await asyncio.sleep(3) # blocking main process temporarily so assertions can pass!
+    assert process.is_alive() is False
+    assert process.exitcode == -signal.SIGTERM
 
     print("closing connection...")
     await robot_client.close()
