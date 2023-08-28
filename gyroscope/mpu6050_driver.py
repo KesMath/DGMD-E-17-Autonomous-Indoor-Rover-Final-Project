@@ -26,23 +26,23 @@ class GyroscopeDriver():
     def read_yaw(self):
         return np.rad2deg(self.__poll_sensor(2))
 
-    # determine if sensor's orientation is -90deg
+    # determine if sensor's orientation is +90deg
     async def poll_sensor_until_90_clockwise(self, roverBase):
         print("polling sensor...")
         while True:
             yaw = self.read_yaw()
-            if (yaw < THRESHOLDING_VALUE[0]): 
-                print("Clockwise 90: " + str(THRESHOLDING_VALUE[0]) + ": "  + str(yaw) + "\n")
+            if (yaw > THRESHOLDING_VALUE[1]): 
+                print("Clockwise 90: " + str(THRESHOLDING_VALUE[1]) + ": "  + str(yaw) + "\n")
                 print("stopping rover...")
                 return await roverBase.stop()
             else:
                 print("YAW:" + str(yaw))
 
-    # determine if sensor's orientation is +90deg
+    # determine if sensor's orientation is -90deg
     async def poll_sensor_until_90_counter_clockwise(self, roverBase):
         while True:
             yaw = self.read_yaw()
-            if (yaw > THRESHOLDING_VALUE[1]): 
+            if (yaw < THRESHOLDING_VALUE[0]): 
                 print("Counter-Clockwise 90: " + str(THRESHOLDING_VALUE[1]) + ": "  + str(yaw) + "\n")
                 print("stopping rover...")
                 return await roverBase.stop()
