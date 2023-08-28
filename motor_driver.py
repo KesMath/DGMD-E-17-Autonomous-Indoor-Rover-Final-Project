@@ -177,9 +177,9 @@ async def main():
     gyro_sensor = GyroscopeDriver()
 
     # TECHNIQUE 1
-    process = Process(target=gyro_sensor.poll_for_90_clockwise, args=(roverBase,))
+    process = Process(target=gyro_sensor.poll_for_90_counter_clockwise, args=(roverBase,))
     process.start()
-    await spin_left_90_degrees(roverBase) # blocks until completed or cancelled.
+    await spin_right_90_degrees(roverBase) # blocks until completed or cancelled.
     print("terminating sensor polling process...")
     process.terminate()
     await asyncio.sleep(3) # blocking main process temporarily so assertions can pass!
