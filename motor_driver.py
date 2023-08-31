@@ -1,10 +1,12 @@
 import time
 import asyncio
+from multiprocessing import Process
 from path_planning.grid_maps import *
 from path_planning.dijkstra_path_planner import *
 
 from viam.components.base import Base
 from viam.robot.client import RobotClient
+from viam.services.slam.client import SLAMClient
 from viam.rpc.dial import Credentials, DialOptions
 
 async def connect():
@@ -97,14 +99,21 @@ async def walk_enclosure(base):
     time.sleep(2)
 
 
-# async def get_2D_Map_of_enclosure():
-#     driver = LidarDriver(port_name= "/dev/ttyUSB0")
-#     driver.scan_enclosure()
-#     driver.sampling_df.to_csv('slam/enclosure_sampling.csv', header = False, index = False)
-    # SUBPROCESS ME: "python lidar/scan1.py > slam/sampling.csv"
-    # SUBPROCESS ME: "python slam/map.py"
+async def get_2D_map_of_enclosure(robot_client, roverBase):
+    # https://blog.pollithy.com/python/numpy/pointcloud/tutorial-pypcd
+    # dispatch slam_svc as another process, 
+    # then when walk_enclosure doesn't block anymore (i.e. rover returns back to base)
+    # we terminate process
+    slam_svc = SLAMClient.from_robot(robot=robot_client, name="rover-slam-service")
+    pcd_map = await slam_svc.get_point_cloud_map()
+    await walk_enclosure(roverBase)
 
 async def main():
+
+    #################################
+    #### INITIALIZATION PHASE #######
+    #################################
+
     # TODO: see if this can dynamically be mapped to grid cell after SLAM localization
     start_point = (4,0)
 
@@ -119,9 +128,18 @@ async def main():
 
     print("connecting rover to Viam server...")
     robot_client = await connect()
-
+    
     # Get the base component from the Viam Rover
     roverBase = Base.from_robot(robot_client, 'viam_base')
+
+    #################################
+    #### PERCEPTION PHASE ###########
+    #################################
+    await get_2D_map_of_enclosure(robot_client=robot_client, roverBase=RobotClient)
+
+    #################################
+    #### MOTION PLANNING PHASE ######
+    #################################
 
     print("calculating shortest path...")
     shortest_path = return_shortest_path(start_point = start_point, goal_point = goal_point, width = GRID_WIDTH, height = GRID_HEIGHT, gridmap= DIAGONAL_OCCUPIED_GRID, resolution = STEP_COST)
