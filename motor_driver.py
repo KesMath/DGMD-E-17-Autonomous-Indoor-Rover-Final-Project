@@ -117,7 +117,7 @@ async def get_2D_map_of_enclosure(robot_client, roverBase):
     # we terminate the collection of point cloud values
     process = Process(target=get_pcd_of_enclosure, args=(robot_client,))
     process.start()
-    await walk_enclosure(roverBase)
+    await walk_enclosure(base = roverBase)
     process.terminate()
     await asyncio.sleep(3) # blocking main process temporarily so assertions can pass!
     assert process.is_alive() is False
@@ -152,7 +152,7 @@ async def main():
     #### PERCEPTION PHASE ###########
     #################################
 
-    await get_2D_map_of_enclosure(robot_client=robot_client, roverBase=RobotClient)
+    # await get_2D_map_of_enclosure(robot_client=robot_client, roverBase=roverBase)
 
     #################################
     #### MOTION PLANNING PHASE ######
