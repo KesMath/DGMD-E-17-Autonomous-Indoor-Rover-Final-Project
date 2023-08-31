@@ -1,4 +1,5 @@
 import time
+import signal
 import asyncio
 from multiprocessing import Process
 from path_planning.grid_maps import *
@@ -98,15 +99,30 @@ async def walk_enclosure(base):
     await spin_right_90_degrees(base)
     time.sleep(2)
 
+async def generate_point_cloud_map(robot_client):
+    slam_svc = SLAMClient.from_robot(robot=robot_client, name="rover-slam-service")
+    pcd_map = await slam_svc.get_point_cloud_map() # since we will be sending this a SIGTERM, we need to use a signal-handler so that object can either be returned or saved to file
+    return pcd_map
+
+# function wrapper trick to call async function using multiporcessing
+# https://stackoverflow.com/questions/71678575/how-do-i-call-an-async-function-in-a-new-process-using-multiprocessing
+def get_pcd_of_enclosure(robot_client):
+    asyncio.run(generate_point_cloud_map(robot_client=robot_client))
 
 async def get_2D_map_of_enclosure(robot_client, roverBase):
     # https://blog.pollithy.com/python/numpy/pointcloud/tutorial-pypcd
-    # dispatch slam_svc as another process, 
-    # then when walk_enclosure doesn't block anymore (i.e. rover returns back to base)
-    # we terminate process
-    slam_svc = SLAMClient.from_robot(robot=robot_client, name="rover-slam-service")
-    pcd_map = await slam_svc.get_point_cloud_map()
+
+    # This function dispatches get_pcd_of_enclosure() as another process. 
+    # Then when walk_enclosure() main process doesn't block anymore (i.e. rover returns back to base)
+    # we terminate the collection of point cloud values
+    process = Process(target=get_pcd_of_enclosure, args=(robot_client,))
+    process.start()
     await walk_enclosure(roverBase)
+    process.terminate()
+    await asyncio.sleep(3) # blocking main process temporarily so assertions can pass!
+    assert process.is_alive() is False
+    assert process.exitcode == -signal.SIGTERM
+
 
 async def main():
 
@@ -135,6 +151,7 @@ async def main():
     #################################
     #### PERCEPTION PHASE ###########
     #################################
+
     await get_2D_map_of_enclosure(robot_client=robot_client, roverBase=RobotClient)
 
     #################################
