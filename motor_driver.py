@@ -100,8 +100,8 @@ async def walk_enclosure(base):
     time.sleep(2)
 
 async def generate_point_cloud_map(robot_client):
-    slam_svc = SLAMClient.from_robot(robot=robot_client, name="rover-slam-service")
-    pcd_map = await slam_svc.get_point_cloud_map() # since we will be sending this a SIGTERM, we need to use a signal-handler so that object can either be returned or saved to file
+    slam_service = SLAMClient.from_robot(robot=robot_client, name="rover-slam-service")
+    pcd_map = await slam_service.get_point_cloud_map() # since we will be sending this a SIGTERM, we need to use a signal-handler so that object can either be returned or saved to file
     return pcd_map
 
 # function wrapper trick to call async function using multiporcessing
