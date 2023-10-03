@@ -202,7 +202,10 @@ async def main():
 
     robot_client = await connect()
     pcd_map = await generate_point_cloud_map(robot_client)
-    print(pcd_map)
+    print(pcd_map[0])
+    # strip 'point_cloud_pcd_chunk: "' in heading and trailing '"' for pyntcloud parser to load in dataset correctly
+
+    # save map to pcd file
     await robot_client.close()
 
 if __name__ == '__main__':
