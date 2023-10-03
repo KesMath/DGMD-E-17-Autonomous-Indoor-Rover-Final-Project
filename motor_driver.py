@@ -191,8 +191,6 @@ async def get_2D_map_of_enclosure(robot_client, roverBase):
 async def main():
 # PCD REFERENCE: https://python.viam.dev/autoapi/viam/gen/service/slam/v1/slam_pb2/index.html#viam.gen.service.slam.v1.slam_pb2.GetPointCloudMapResponse
 # NEXT STEPS:
-# (1) - Drive rover around enclosure to get List[bytes] and save that locally. 
-# (2) - Create a module to convert bytes into PCD integers.
 # (3) - Create a module graphically plot PCD Points.
 # (4) - Generate 2D binary occupancy grid map (either graphically by looking at the pixels or numerically by looking at raw dataset). The latter is be preferred choice for performance reasons
 
@@ -203,11 +201,10 @@ async def main():
     robot_client = await connect()
     pcd_map = await generate_point_cloud_map(robot_client)
     print(pcd_map[0])
-    # Data Wrangling Steps for PyntCloud Parser to load in dataset correctly:
-    # strip 'point_cloud_pcd_chunk: "' in heading and trailing '"'
-    # replace '\n'
-    
-    # save map to pcd file
+    # clean data format
+    # save to pcd file
+    # load in pcd file to parser
+    # convert point cloud to occupancy grid!
     await robot_client.close()
 
 if __name__ == '__main__':
