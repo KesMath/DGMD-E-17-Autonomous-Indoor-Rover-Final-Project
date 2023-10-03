@@ -201,10 +201,13 @@ async def main():
     robot_client = await connect()
     pcd_map = await generate_point_cloud_map(robot_client)
     print(pcd_map[0])
-    # clean data format
-    # save to pcd file
-    # load in pcd file to parser
-    # convert point cloud to occupancy grid!
+
+    # confirm printout of pcd_map[0]
+    # 1) clean data format
+    # 1) save to pcd file
+    # 1) load in pcd file to parser
+    # 2) plot pcd map
+    # 2) convert point cloud to occupancy grid!
     await robot_client.close()
 
 if __name__ == '__main__':
