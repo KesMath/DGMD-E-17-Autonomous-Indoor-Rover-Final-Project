@@ -18,7 +18,7 @@ def convert_dataset_to_pcd_file_format(str):
     return newline_delimited_list
 
 def main():
-    f = open("slam/out2.log", "r")
+    f = open("slam/pcd_out.log", "r")
     buff = f.read()
     f.close()
     formatted_dataset = convert_dataset_to_pcd_file_format(buff)
