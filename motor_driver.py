@@ -200,8 +200,8 @@ async def main():
 
     robot_client = await connect()
     pcd_map = await generate_point_cloud_map(robot_client)
-    print(len(pcd_map))
-    print(pcd_map[0])
+    with open("map.pcd", 'wb') as outputFile: # w = write, b = raw bytes mode
+        outputFile.write(pcd_map[0])
 
     # confirm printout of pcd_map[0]
     # 1) clean data format
