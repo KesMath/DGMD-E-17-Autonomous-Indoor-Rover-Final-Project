@@ -104,25 +104,10 @@ async def generate_point_cloud_map(robot_client):
     pcd_map = await slam_service.get_point_cloud_map() # since we will be sending this a SIGTERM, we need to use a signal-handler so that object can either be returned or saved to file
     return pcd_map
 
-# function wrapper trick to call async function using multiporcessing
+# function wrapper trick to call async function using multiprocessing
 # https://stackoverflow.com/questions/71678575/how-do-i-call-an-async-function-in-a-new-process-using-multiprocessing
 def get_pcd_of_enclosure(robot_client):
     asyncio.run(generate_point_cloud_map(robot_client=robot_client))
-
-async def get_2D_map_of_enclosure(robot_client, roverBase):
-    # https://blog.pollithy.com/python/numpy/pointcloud/tutorial-pypcd
-
-    # This function dispatches get_pcd_of_enclosure() as another process. 
-    # Then when walk_enclosure() main process doesn't block anymore (i.e. rover returns back to base)
-    # we terminate the collection of point cloud values
-    process = Process(target=get_pcd_of_enclosure, args=(robot_client,))
-    process.start()
-    await walk_enclosure(base = roverBase)
-    process.terminate()
-    await asyncio.sleep(3) # blocking main process temporarily so assertions can pass!
-    assert process.is_alive() is False
-    assert process.exitcode == -signal.SIGTERM
-
 
 # async def main():
 
@@ -189,15 +174,6 @@ async def get_2D_map_of_enclosure(robot_client, roverBase):
 #     await robot_client.close()
 
 async def main():
-# PCD REFERENCE: https://python.viam.dev/autoapi/viam/gen/service/slam/v1/slam_pb2/index.html#viam.gen.service.slam.v1.slam_pb2.GetPointCloudMapResponse
-# NEXT STEPS:
-# (3) - Create a module graphically plot PCD Points.
-# (4) - Generate 2D binary occupancy grid map (either graphically by looking at the pixels or numerically by looking at raw dataset). The latter is be preferred choice for performance reasons
-
-# TEST / CONFIRM that Point Cloud Can be Generated Sequentially After Drive (would make logic much easier)
-# (Since SLAM service is configured to run whenever rover connects to VIAM server, it should automatically be building the map as a background process. So, I believe there is no need to have run a concurrent process while driving)
-# (1) clear any internal SLAM state (by deleting directories) and have rover drive around enclosure. After rover drives around, call generate_point_cloud_map(), plot the points and affirm it matches it's environment  
-
     robot_client = await connect()
     pcd_map = await generate_point_cloud_map(robot_client)
     with open("map.pcd", 'wb') as outputFile: # w = write, b = raw bytes mode

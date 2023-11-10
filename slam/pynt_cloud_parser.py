@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 
 def main():
-    cloud = PyntCloud.from_file("slam/map.pcd")
+    cloud = PyntCloud.from_file("slam/map2.pcd")
     x_arr = cloud.points.x
     y_arr = cloud.points.y
 
